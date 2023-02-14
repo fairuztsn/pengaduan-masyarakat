@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('masyarakat', function (Blueprint $table) {
-            $table->char("nik", $length=16)->primary();
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->char("nik", $length=16)->unique();
+            $table->string("email")->unique();
             $table->string('nama');
             $table->string('username')->unique();
             $table->string('password');
+
+            $table->timestamp("updated_at")->nullable();
+            $table->timestamp("created_at")->nullable();
         });
     }
 

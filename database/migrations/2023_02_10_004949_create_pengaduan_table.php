@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('pengaduan', function (Blueprint $table) {
             $table->id();
             $table->date("tanggal_pengaduan");
-            $table->char("nik");
+            $table->unsignedBigInteger("id_user");
             $table->text("isi_laporan");
             $table->string("foto");
-            $table->enum("status", ["0", "process", "selesai"]);
+            $table->enum("status", ["0", "process", "selesai"])->default("0");
             $table->timestamps();
 
-            $table->foreign('nik')->references('nik')->on('masyarakat')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
