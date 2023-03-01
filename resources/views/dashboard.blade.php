@@ -1,35 +1,31 @@
 @extends("layouts.app")
 @section("content")
-<div class="m-4">
-    <form method="POST" action="{{route("laporan.store")}}">
-      @csrf
-        <div class="m-4">
-            <h3>Laporan Pengaduan</h3>
-            <span style="opacity: 0.8;">{{ date("Y-m-d") }}</span>
-        </div>
-        <div class="form-group row m-3">
-          <label class="col-sm-2 col-form-label">Isi laporan</label>
-          <div class="col-sm-10">
-            <textarea name="isi_laporan" class="form-control" rows="5">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse sequi voluptas doloribus, reprehenderit neque perferendis expedita magnam nesciunt placeat, a illum delectus. Similique delectus eum aliquid quidem fugit inventore, labore voluptatum sequi. Rem, atque doloribus! Qui fuga neque vero possimus nulla inventore tempore, expedita numquam quam minima? Alias, vitae est.</textarea>
+Disini nanti grafik
+    {{-- <ul class="list-group">
+      @foreach($report as $laporan)
+      <li class="list-group-item m-2 rounded" style="box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">
+        <div class="p-2">
+          <div class="">
+            <span class=""> 
+              {{ \App\Models\User::where("id", $laporan->id_user)->first()->username }}</span>  
+            <span class="opacity-50">{{$laporan->tanggal_pengaduan}}</span> 
+            @if(\App\Models\Tanggapan::where("id_laporan", $laporan->id)->count() > 0) 
+              <span class="btn btn-dark btn-sm ms-3">
+                <i class="fas fa-check"></i> Laporan ini sudah ditanggapi
+              </span> 
+              @endif
+          </div> 
+          <div class="created-at mt-3">
+            <span class="opacity-50"></span></span>
+          </div>
+          <div class="mt-3">
+            {{Str::limit($laporan->isi_laporan, 250)}}
+          </div>
+          <div class="reply mt-3">
+            <a href="{{ url("u/laporan/$laporan->id") }}" class="btn btn-outline-dark"><i class="fas fa-eye me-2"></i> Lihat</a>
           </div>
         </div>
-        <div class="form-group row m-3">
-          <label class="col-sm-2 col-form-label">Foto</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" value="test.jpg" name="foto">
-          </div>
-        </div>
-        <div class="form-group row m-3">
-            <label class="col-sm-2 col-form-label">Tanggal Pengaduan</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" value="{{date("Y-m-d")}}" name="tanggal_pengaduan">
-            </div>
-        </div>
-        <div class="form-group row m-3">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Kirim</button>
-            </div>
-        </div>
-      </form>
-</div>
+      </li>
+      @endforeach
+    </ul> --}}
 @endsection

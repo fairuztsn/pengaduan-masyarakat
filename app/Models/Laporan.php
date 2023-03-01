@@ -9,8 +9,8 @@ class Laporan extends Model
 {
     use HasFactory;
 
-    protected $table = "pengaduan";
+    protected $table = "laporan";
     protected $fillable = [
-        "tanggal_pengaduan", "id_user", "isi_laporan", "foto", "status", "created_at", "updated_at"
+        "id_laporan", "tanggal_kejadian", "id_user", "isi", "foto", "status", "created_at", "updated_at"
     ];
 }
