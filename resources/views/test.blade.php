@@ -1,1 +1,11 @@
-<a href="#" class="btn btn-outline-dark"><i class="fas fa-eye"></i></a>
+@extends("layouts.app")
+@section("custom-css")
+<style>
+    .sidebar-nav, a.sidebar-link, .sidebar-item, .sidebar-content, .sidebar-items {
+        background: black;
+    }
+</style>
+@endsection
+@section("content")
+Hello
+@endsection

@@ -15,7 +15,11 @@
 
 	@yield("custom-css")
     <style>
-    </style>
+		.sidebar-nav, a.sidebar-link, .sidebar-item, .sidebar-content, .sidebar-items, form.sidebar-link {
+			background: black;
+			color: white;
+		}
+	</style>
 </head>
 <body>
 	<div class="wrapper">
@@ -86,7 +90,7 @@
 					<li class="sidebar-item">
 						<form class="sidebar-link" action="{{ route("logout") }}" method="POST">
 							@csrf
-							<button class=" btn btn-danger"><i class="align-middle fas fa-right-from-bracket"></i>
+							<button class=" btn btn-danger form-control"><i class="align-middle fas fa-right-from-bracket"></i>
 								{{ " Log out" }}
 							</button>
 						</form>
