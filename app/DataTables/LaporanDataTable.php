@@ -26,7 +26,7 @@ class LaporanDataTable extends DataTable
             ->addColumn('action', function($query) {
                 $route = route("laporan.detail", $query->id);
                 return <<<html
-                <a href="$route" class="btn btn-outline-dark"><i class="fas fa-eye"></i></a>
+                <a href="$route" class="btn btn-dark"><i class="fas fa-eye"></i></a>
                 html;
             })->editColumn("foto", function($query) {
                 $url = "/storage/foto_laporan/$query->foto";
@@ -88,6 +88,7 @@ class LaporanDataTable extends DataTable
                   ->width(60)
                   ->addClass('text-center'),
             Column::make('id'),
+            Column::make("judul"),
             Column::make("tanggal_kejadian"),
             Column::make("id_user"),
             Column::make("foto"),

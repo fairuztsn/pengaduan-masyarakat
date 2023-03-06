@@ -22,7 +22,7 @@
 		@if(Auth::check())
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" style="text-decoration:none;" href="index.html">
+				<a class="sidebar-brand" style="text-decoration:none;" href="{{ route("dashboard") }}">
           <span class="align-middle">{{Auth::user()->username}}</span>
         </a>
 
@@ -32,7 +32,7 @@
 					</li>
 					<li class="sidebar-item {{Route::currentRouteName() == "dashboard" ? "active" : ""}}">
 						<a class="sidebar-link" href="{{ route("dashboard") }}">
-						<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+						<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">{{ Auth::user()->role_id == 1 ? "Buat laporan" : "Dashboard" }}</span>
 						</a>
 					</li>
 					{{-- if role is user --}}
@@ -40,6 +40,11 @@
 					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "laporan" ? "active" : "" }}">
 						<a class="sidebar-link" href="{{ route("laporan.index") }}">
 						<i class="align-middle" data-feather="book"></i> <span class="align-middle">Riwayat Laporan</span>
+						</a>
+					</li>
+					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "notifikasi" ? "active" : "" }}">
+						<a class="sidebar-link" href="{{ route("laporan.index") }}">
+						<i class="align-middle fas fa-bell"></i> <span class="align-middle">Notifikasi</span>
 						</a>
 					</li>
 					@endif
@@ -58,6 +63,12 @@
 					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "tanggapan" ? "active" : "" }}">
 						<a class="sidebar-link" href="{{ route("tanggapan.index") }}">
 						<i class="fas fa-comment align-middle"></i> <span class="align-middle">Tanggapan</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "user" ? "active" : "" }}">
+						<a class="sidebar-link" href="{{ route("user.index") }}">
+						<i class="fas fa-user align-middle"></i> <span class="align-middle">User</span>
 						</a>
 					</li>
 

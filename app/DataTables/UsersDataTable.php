@@ -23,7 +23,13 @@ class UsersDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'users.action')
+            ->addColumn('action', function($query) {
+                $route = route("user.profile", $query->id);
+
+                return <<<html
+                <a href="$route" class="btn btn-dark"><i class="fas fa-eye"></i></a>
+                html;
+            })
             ->setRowId('id');
     }
 
@@ -35,7 +41,7 @@ class UsersDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model::where("role_id", 1)->orWhere("role_id", 2);
     }
 
     /**
@@ -76,9 +82,10 @@ class UsersDataTable extends DataTable
                   ->width(60)
                   ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
+            Column::make('nik'),
+            Column::make("nama"),
+            Column::make("username"),
             Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 

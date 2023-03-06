@@ -33,8 +33,7 @@ class TanggapanController extends Controller
     
     public function store(Request $request) {
         $tanggapan = new Tanggapan();
-
-        $today = date("Y-m-d");
+        
         $tanggapan->id_laporan = $request->id;
         $tanggapan->tanggapan = $request->tanggapan;
         $tanggapan->id_user = Auth::id();

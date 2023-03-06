@@ -86,25 +86,29 @@
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
 
-    @if($laporan->status != 0)
-    <span class="alert alert-{{ $laporan->status == "process" || $laporan->status == "selesai" ? "light" : "danger" }} alert-dismissible fade show form-control">
-      <i class="fas fa-warning me-3"></i>
-      @if($laporan->status == "process")
-      Laporan ini sedang dalam status proses
-      @elseif($laporan->status == "tolak")
-      Laporan ini telah ditolak
-      @elseif($laporan->status == "selesai")
-      Laporan ini telah dianggap selesai
-      @endif
-    </span>
-    @endif
-    <div class="m-2 rounded bg-white" style="box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">
+    
+    <div class="rounded bg-white">
         <div class="p-3">
           <div class="row">
-            <div class="col-10 d-flex mt-2">
-              <span style="font-weight: bolder;">{{\App\Models\User::where("id", $laporan->id_user)->first()->username}}</span>
-              <div class="created-at ms-5">
-                <span class="opacity-75" style="font-weight: bolder;">{{ $laporan->created_at }}</span>
+            <div class="col-12">
+              @if($laporan->status != 0)
+              <span class="alert alert-{{ $laporan->status == "process" || $laporan->status == "selesai" ? "success" : "danger" }} form-control">
+                <i class="fas fa-info me-3"></i>
+                @if($laporan->status == "process")
+                proses
+                @elseif($laporan->status == "tolak")
+                tidak valid
+                @elseif($laporan->status == "selesai")
+                selesai
+                @endif
+              </span>
+              @endif
+              <div class="d-flex" style="font-weight: 800;">
+                <span class="me-2"> {{ \App\Models\User::where("id", $laporan->id_user)->first()->nama }} </span>
+                <span class="opacity-75">  {{"@".\App\Models\User::where("id", $laporan->id_user)->first()->username}}</span>
+              <div class="created-at">
+                <span class="opacity-50 ms-3" style="">{{ $laporan->created_at }}</span>
+              </div>
               </div>
               {{-- @if(\App\Models\Tanggapan::where("id_laporan", $laporan->id)->count() > 0)
               <div class="ms-5 btn btn-dark btn-sm m2-2">
@@ -114,7 +118,7 @@
             </div>
 
             {{-- Dropdown option --}}
-            @if(Auth::user()->role_id != 1)
+            {{-- @if(Auth::user()->role_id != 1)
             <div class="col-2">
                 <label class="dropdown" style="transform: scale(0.9)">
   
@@ -171,7 +175,7 @@
                   
                 </label>
               </div>
-            @endif
+            @endif --}}
           </div>
           <div class="mt-3">
             {!! $laporan->isi !!}
@@ -232,7 +236,7 @@
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
         <div class="tanggapan">
-            <div class="m-2 rounded bg-white" style="box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px; ">
+            <div class="m-2 rounded bg-white">
                 <div class="p-3">
                     <div class="d-flex">
                         <span class="" style="font-weight: bold;">

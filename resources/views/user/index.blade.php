@@ -7,6 +7,6 @@
 </div>
 @endsection
 
-@push('scripts')
-    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@push("scripts")
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush

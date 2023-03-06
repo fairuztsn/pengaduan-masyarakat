@@ -27,12 +27,17 @@ class TanggapanDataTable extends DataTable
             ->addColumn('action', function($query) {
                 $csrf_token = csrf_token();
                 $action = route("tanggapan.delete", $query->id);
-
+                $route = route("laporan.detail", $query->id_laporan);                
+                
                 return <<<html
+                <div class="d-flex">
+                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 <form action="$action" method="POST">
                     <input type="hidden" name="_token" value="$csrf_token" />
-                    <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                 </form>
+                </div>
+                
                 html;
             })
             // ->editColumn("id_user", function($query) {
@@ -85,17 +90,16 @@ class TanggapanDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
+            ->width(60)
+            ->addClass('text-center'),
             Column::make('id'),
             Column::make('id_laporan'),
             Column::make("tanggapan"),
             Column::make("id_user"),
             Column::make('created_at'),
-            Column::make('updated_at'),
-            Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center')
         ];
     }
 

@@ -119,7 +119,7 @@
       <div class="col-3">
         <p class="mt-3">{{ $laporan->created_at }}</p>
       </div>
-      <div class="col-4 text-center">
+      <div class="col-4 text-center text-{{in_array($laporan->status, [0, "selesai", "process"]) ? "dark" : "danger"}}">
         <p class="mt-3">
           @if($laporan->status == 0)
           {{ "Belum ditanggapi" }}
@@ -184,7 +184,11 @@
   @endforelse
 </ul>
 @else
-{{ $dataTable->table() }}
+<div class="bg-white rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+  <div class="table p-5">
+    {{ $dataTable->table() }}
+  </div>
+</div>
 @push('scripts')
 <script>
   $(document).ready(function(){
