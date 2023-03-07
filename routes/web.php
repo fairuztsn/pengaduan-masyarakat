@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TanggapanController;
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+// Controllers
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TanggapanController;
+use App\Http\Controllers\ArchivedController;
+
+// Middlewares
 use App\Http\Middleware\OnlyAdmin;
 use App\Http\Middleware\OnlyUser;
-use App\Models\Laporan;
 
 Auth::routes();
 
@@ -38,7 +40,8 @@ Route::middleware('auth')->group(function () {
         Route::post("/{id}/update", [LaporanController::class, "update"])->name("laporan.update");
         Route::post("/{id}/delete", [LaporanController::class, "destroy"])->name("laporan.delete");
 
-        Route::post("{id}/{method}", [LaporanController::class, "set"])->name("laporan.set");
+        Route::post("/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
+        Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
     });
 
     Route::middleware("onlyadmin")->group(function() {
@@ -48,6 +51,15 @@ Route::middleware('auth')->group(function () {
     
             Route::post("{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
         });
+
+        Route::prefix("archived")->group(function() {
+            Route::get("/", [ArchivedController::class, "index"])->name("archived.index");
+
+            Route::prefix("laporan")->group(function() {
+                Route::get("/", [ArchivedController::class, "laporan"])->name("archived.laporan");
+            });
+        });
+
 
         Route::prefix("user")->group(function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");

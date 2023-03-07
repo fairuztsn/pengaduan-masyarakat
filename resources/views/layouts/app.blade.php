@@ -14,12 +14,6 @@
     @vite(['resources/js/app.js'])
 
 	@yield("custom-css")
-    <style>
-		.sidebar-nav, a.sidebar-link, .sidebar-item, .sidebar-content, .sidebar-items, form.sidebar-link {
-			background: black;
-			color: white;
-		}
-	</style>
 </head>
 <body>
 	<div class="wrapper">
@@ -76,9 +70,9 @@
 						</a>
 					</li>
 
-					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "search" ? "active" : "" }}">
-						<a class="sidebar-link" href="{{ route("search") }}">
-						<i class="fas fa-search align-middle"></i> <span class="align-middle">Search</span>
+					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "archived" ? "active" : "" }}">
+						<a class="sidebar-link" href="{{ route("archived.index") }}">
+						<i class="fas fa-archive align-middle"></i> <span class="align-middle">Archive</span>
 						</a>
 					</li>
 					@endif

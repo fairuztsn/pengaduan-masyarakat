@@ -10,12 +10,14 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 use App\DataTables\LaporanDataTable;
 
 class LaporanController extends Controller
 {
     //
+
     private function removeImg($path) {
         unlink(storage_path('app/public/foto_laporan/'.$path));
     }
@@ -23,7 +25,7 @@ class LaporanController extends Controller
     public function dashboard() {
         $user_role_id = Auth::user()->role_id;
         return $user_role_id == 1 ? view("laporan.create") : view("dashboard", [
-            "report" => Laporan::orderBy("created_at", "desc")->get()
+            "report" => Laporan::whereNull("deleted_at")->orderBy("created_at", "desc")->get()
         ]);
     }
 
@@ -31,7 +33,7 @@ class LaporanController extends Controller
         $user = Auth::user();
 
         if($user->role_id == 1) {
-            $val =  Laporan::where("id_user", Auth::id())->orderBy("created_at", "desc")->get();
+            $val =  Laporan::where("id_user", Auth::id())->whereNull("deleted_at")->orderBy("created_at", "desc")->get();
 
             return view("laporan.index", [
                 "report" => $val
@@ -43,9 +45,10 @@ class LaporanController extends Controller
     }
 
     public function detail($id) {
-        return view("laporan.detail", [
-            "laporan"=>Laporan::where("id", $id)->first(),
-            "tanggapans"=>Tanggapan::where("id_laporan", $id)->orderBy("created_at", "asc")->get()
+        $report = Laporan::where("id", $id)->whereNull("deleted_at")->first();
+        return $report == null ? abort(404) : view("laporan.detail", [
+            "laporan"=> $report,
+            "tanggapans"=>$report->tanggapan
         ]);
     }
 
@@ -124,36 +127,36 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function set($id, $method) {
-        $methods = [
+    public function set(Request $request) {
+        $status = [
             1 => "process",
             2 => "tolak",
             3 => "selesai"
         ];
 
-        $laporan = Laporan::where("id", $id)->first();
-        $old = $laporan->status;
-        $method = $methods[$method];
+        if(in_array($request->status, [1,2,3])) {
+            $report = Laporan::find($request->id)->first();
 
-        if(in_array($method, $methods)) {
-            $laporan->status = $method;
-            $laporan->update();
+            if($report->status == $status[$request->status]) {
+                return response()->json(["response" => "Tidak ada perubahan"]);
+            } else {
+                $report->status = $status[$request->status];
+                $report->update();
+                return response()->json(["response" => "Success"]);
+            }
 
-            return redirect()->route("laporan.detail", $id)->with("message", [
-                "type" => "success",
-                "message" => "Status berhasil diubah dari $old menjadi $laporan->status"
-            ]);
-        }else if($old == $method) {
-            return redirect()->route("laporan.detail", $id)->with("message", [
-                "type" => "warning",
-                "message" => "Tidak ada perubahan"
+            return response()->json([
+                "response" => "Success"
             ]);
         }else {
-            return redirect()->route("laporan.detail", $id)->with("message", [
-                "type" => "danger",
-                "message" => "Unknown status"
+            return response()->json([
+                "response" => "Status tidak terdefinisi"
             ]);
         }
+
+        return response()->json([
+            "response" => (int) $request->tanggapan
+        ]);
     }
 
     public function destroy($id) {
@@ -165,6 +168,16 @@ class LaporanController extends Controller
         return redirect()->route("laporan.index")->with("message", [
             "type" => "danger",
             "message" => "Laporan berhasil dihapus"
+        ]);
+    }
+
+    public function archive(Request $request) {
+        $report = Laporan::find($request->id);
+        $report->deleted_at =  Carbon::now()->toDateTimeString();
+        $report->update();
+
+        return response()->json([
+            "response" => "Success"
         ]);
     }
 

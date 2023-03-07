@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Laporan extends Model
 {
@@ -11,6 +12,10 @@ class Laporan extends Model
 
     protected $table = "laporan";
     protected $fillable = [
-        "id_laporan", "tanggal_kejadian", "id_user", "isi", "foto", "status", "created_at", "updated_at"
+        "tanggal_kejadian", "id_user", "isi", "foto", "status", "created_at", "updated_at"
     ];
+
+    public function tanggapan(): hasMany {
+        return $this->hasMany(Tanggapan::class, "id_laporan");
+    }
 }

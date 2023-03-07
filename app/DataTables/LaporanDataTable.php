@@ -25,8 +25,16 @@ class LaporanDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $route = route("laporan.detail", $query->id);
+                $action = route("laporan.archive", $query->id);
+                $csrf_token = csrf_token();
                 return <<<html
-                <a href="$route" class="btn btn-dark"><i class="fas fa-eye"></i></a>
+                <div class="d-flex">
+                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
+                <form action="$action" method="POST">
+                    <input type="hidden" name="_token" value="$csrf_token" />
+                    <button class="btn btn-danger"><i class="fas fa-archive"></i></button>
+                </form>
+                </div>
                 html;
             })->editColumn("foto", function($query) {
                 $url = "/storage/foto_laporan/$query->foto";
@@ -47,7 +55,7 @@ class LaporanDataTable extends DataTable
      */
     public function query(Laporan $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->whereNull("deleted_at");
     }
 
     /**

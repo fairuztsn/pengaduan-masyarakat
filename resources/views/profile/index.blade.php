@@ -22,7 +22,7 @@
             </div>
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class="d-flex justify-content-end text-center py-1">
-                @if($user->role_id == 2)
+                @if($user->role_id === 2 || $user->role_id == 3)
                 <div>
                     <p class="mb-1 h5">{{ \App\Models\Tanggapan::where("id_user", $user->id)->count() }}</p>
                     <p class="small text-muted mb-0">Total Tanggapan</p>
@@ -68,7 +68,7 @@
                     </div>
                   </div>
                   @empty
-                  Tidak ada data
+                  <p class="text-center">Tidak ada data</p>
                   @endforelse
 
                   @elseif($user->role_id == 2)
@@ -87,7 +87,7 @@
                     </div>
                   </div>
                   @empty
-                  Tidak ada data
+                  <p class="text-center">Tidak ada data</p>
                   @endforelse
                   @endif
                 </div>

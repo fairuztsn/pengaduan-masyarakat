@@ -21,7 +21,9 @@ class UserController extends Controller
 
         return $user != null ? view("profile.index", [
             "user" => $user,
-            "recent" => $user->role_id == 1 ? Laporan::where("id_user", $id)->orderBy("created_at", "desc")->take(2)->get() : Tanggapan::where("id_user", $id)->orderBy("created_at", "desc")->take(2)->get()
+            "recent" => $user->role_id == 1 ? Laporan::where("id_user", $id)->whereNull("deleted_at")->orderBy("created_at", "desc")->take(2)->get() : Tanggapan::where("id_user", $id)->whereHas("laporan", function($query) {
+                $query->whereNull('deleted_at');
+            })->orderBy("created_at", "desc")->take(2)->get()
         ]) : abort(404);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Tanggapan;
+use App\Models\Laporan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,8 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-
-class TanggapanDataTable extends DataTable
+class LaporanArchivedDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,39 +24,38 @@ class TanggapanDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
+                $route = route("laporan.detail", $query->id);
+                $action = route("laporan.archive", $query->id);
                 $csrf_token = csrf_token();
-                $action = route("tanggapan.delete", $query->id);
-                $route = route("laporan.detail", $query->id_laporan);                
-                
                 return <<<html
                 <div class="d-flex">
                 <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 <form action="$action" method="POST">
                     <input type="hidden" name="_token" value="$csrf_token" />
-                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger"><i class="fas fa-archive"></i></button>
                 </form>
                 </div>
-                
+                html;
+            })->editColumn("foto", function($query) {
+                $url = "/storage/foto_laporan/$query->foto";
+
+                return <<<html
+                <a href="$url" class="link-dark" target="_blank">$query->foto</a>
                 html;
             })
-            // ->editColumn("id_user", function($query) {
-            //     $user = new \App\Models\User();
-            //     return "{$user::where("id", $query->id_user)->first()->username}#{$query->id_user}";
-            // })
+            ->rawColumns(["foto", "action"])
             ->setRowId('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Tanggapan $model
+     * @param \App\Models\LaporanArchived $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Tanggapan $model): QueryBuilder
+    public function query(Laporan $model): QueryBuilder
     {
-        return $model->whereHas("laporan", function($query) {
-            $query->whereNull("deleted_at");
-        });
+        return $model->whereNotNull("deleted_at")->newQuery();
     }
 
     /**
@@ -68,7 +66,7 @@ class TanggapanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('tanggapan-table')
+                    ->setTableId('laporanarchived-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -93,14 +91,16 @@ class TanggapanDataTable extends DataTable
     {
         return [
             Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center'),
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('id_laporan'),
-            Column::make("tanggapan"),
+            Column::make("judul"),
+            Column::make("tanggal_kejadian"),
             Column::make("id_user"),
+            Column::make("foto"),
+            Column::make('status'),
             Column::make('created_at'),
         ];
     }
@@ -112,6 +112,6 @@ class TanggapanDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Tanggapan_' . date('YmdHis');
+        return 'LaporanArchived_' . date('YmdHis');
     }
 }

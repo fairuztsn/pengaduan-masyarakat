@@ -95,11 +95,11 @@
               <span class="alert alert-{{ $laporan->status == "process" || $laporan->status == "selesai" ? "success" : "danger" }} form-control">
                 <i class="fas fa-info me-3"></i>
                 @if($laporan->status == "process")
-                proses
+                Laporan ini sedang dalam proses
                 @elseif($laporan->status == "tolak")
-                tidak valid
+                Laporan ini dianggap tidak valid
                 @elseif($laporan->status == "selesai")
-                selesai
+                Laporan ini telah selesai
                 @endif
               </span>
               @endif
@@ -263,4 +263,99 @@
     @endforelse
     </div>
 </div>
+@if(Auth::user()->role_id != 1)
+<div class="row" style="margin-top: 200px;">
+  <div class="col-12 mt-3 mb-3 form-control bg-white">
+      <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-gear me-3"></i>Pengaturan</p>
+      
+      <div class="p-1">
+        <form action="" class="m-3">
+          @csrf
+          <label class="text-sm" for="" class="mt-3 ms-1">Atur status</label>
+          <select name="status" class="form-select" id="limbo" aria-label="Default select example" onchange="myFunction()">
+              <option disabled>Pilih status</option>
+              <option value="1" {{ $laporan->status == "process" ? "selected" : "" }} >Diproses</option>
+              <option value="3" {{ $laporan->status == "selesai" ? "selected" : "" }}>Selesai</option>
+              <option value="2" {{ $laporan->status == "tolak" ? "selected" : "" }}>Tolak</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="alert alert-danger m-3">
+        <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-warning me-3"></i>Danger Zone</p>
+        <form action="">
+          @csrf
+          <label for="" class="text-sm"><i class="fas fa-info me-2"></i>Dengan mengarsipkan, laporan ini tidak akan tampil dimanapun dan hanya bisa diakses melalui url  <a href="{{ route('archived.laporan') }}" class="link-danger" style="font-weight: bolder;">/archive/laporan/</a> oleh admin.</label>
+          <button class="btn btn-danger mt-2 mb-2" onclick="archive()"> <i class="fas fa-archive me-3"></i> Arsipkan laporan ini</button>
+        </form>
+      </div>
+  </div>
+</div>
+@endif
+<script>
+  function archive() {
+    const confirm_field = `Apakah anda yakin ingin mengarsipkan laporan ini?`
+
+    if(confirm(confirm_field)) {
+      // AJAX
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+          });
+
+      $.ajax({
+          type: "POST",
+          url: "<?php echo route('laporan.archive') ?>",
+          dataType: 'JSON',
+          data: {
+              "_token" : "{{ csrf_token() }}",
+              "id" : "<?php echo $laporan->id ?>"
+          },
+          success: function (data) {
+              //
+              if(data.response === "Success") {
+                  window.location.href = "<?php echo route('laporan.index') ?>"
+              }else {
+                alert(data.response);
+              }
+          }
+      });
+    }
+  }
+
+  function myFunction() {
+    const confirm_field = `Apakah yakin ingin mengubah status ke '${ $('#limbo').find(":selected").text().toLowerCase() }'?`
+    
+    if(confirm(confirm_field)) {
+
+      // AJAX
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+          });
+
+      $.ajax({
+          type: "POST",
+          url: "<?php echo route('laporan.set') ?>",
+          dataType: 'JSON',
+          data: {
+              "_token" : "{{ csrf_token() }}",
+              "status": $('#limbo').find(":selected").val(),
+              "id" : "<?php echo $laporan->id ?>"
+          },
+          success: function (data) {
+              //
+              if(data.response === "Success") {
+                  location.reload();
+              }else {
+                alert(data.response);
+              }
+          }
+      });
+    }
+  
+  }
+</script>
 @endsection
