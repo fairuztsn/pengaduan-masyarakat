@@ -9,7 +9,8 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard</title>
-    <link href="{{asset("static/css/app.css")}}" rel="stylesheet">
+    <link href="{{ asset("static/css/app.css") }}" rel="stylesheet">
+	<link href="{{ asset("css/custom.css") }}" rel="stylesheet">
 	
     @vite(['resources/js/app.js'])
 
@@ -142,6 +143,7 @@
 
 	<script src="{{ asset("js/tinymce/tinymce.min.js") }}"></script>
 	<script src="{{ asset("static/js/app.js" )}}"></script>
+	<script src="{{ asset("js/custom.js") }}"></script>
 	<script>
 		tinymce.init({
 			selector: "#editor"

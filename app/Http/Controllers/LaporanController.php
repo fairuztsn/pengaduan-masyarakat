@@ -181,4 +181,20 @@ class LaporanController extends Controller
         ]);
     }
 
+    public function archived($id) {
+        $report = Laporan::where("id", $id)->whereNotNull("deleted_at")->first();
+        return $report == null ? abort(404) : view("archive.laporan.detail", [
+            "laporan"=> $report,
+            "tanggapans"=>$report->tanggapan
+        ]);
+    }
+
+    public function unarchive(Request $request) {
+        $report = Laporan::find($request->id);
+        $report->deleted_at = null;
+        $report->update();
+        
+        return response()->json(["response" => "Success"]);
+    }
+
 }

@@ -24,7 +24,7 @@ class LaporanArchivedDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
-                $route = route("laporan.detail", $query->id);
+                $route = route("archived.laporan.detail", $query->id);
                 $action = route("laporan.archive", $query->id);
                 $csrf_token = csrf_token();
                 return <<<html

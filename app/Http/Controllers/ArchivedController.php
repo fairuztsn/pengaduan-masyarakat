@@ -14,6 +14,6 @@ class ArchivedController extends Controller
     }
 
     public function laporan(LaporanArchivedDataTable $dataTable) {
-        return $dataTable->render("archive.laporan");
+        return $dataTable->render("archive.laporan.index");
     }
 }

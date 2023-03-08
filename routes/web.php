@@ -48,24 +48,22 @@ Route::middleware('auth')->group(function () {
         Route::prefix("tanggapan")->group(function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
-    
             Route::post("{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
         });
 
         Route::prefix("archived")->group(function() {
-            Route::get("/", [ArchivedController::class, "index"])->name("archived.index");
+            Route::get("/", function() {return view("archive.index");})->name("archived.index");
 
             Route::prefix("laporan")->group(function() {
                 Route::get("/", [ArchivedController::class, "laporan"])->name("archived.laporan");
+                Route::get("/{id}", [LaporanController::class, "archived"])->name("archived.laporan.detail");
+                Route::post("/unarchive", [LaporanController::class, "unarchive"])->name("laporan.unarchive");
             });
         });
 
-
         Route::prefix("user")->group(function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");
-
             Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
-        
         });
 
         Route::get("/search", [Controller::class, "search"])->name("search");

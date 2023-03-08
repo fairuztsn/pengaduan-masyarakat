@@ -128,55 +128,6 @@
           @endif
         </p>
       </div>
-      {{-- <div class="p-2">
-        <div class="row">
-          <div class="col-11 d-flex mt-2">
-            @if(Auth::user()->role_id != 1)
-            <span class="opacity-75"><i class="fas fa-user me-2" style="transform: scale(0.9);"></i>{{\App\Models\User::where("id", $laporan->id_user)->first()->username}}</span>
-            @endif
-            <div class="created-at">
-              <span class="opacity-75 "><i class="fas fa-calendar me-3"></i>{{$laporan->created_at}}</span>
-            </div>
-          </div> --}}
-          {{-- <div class="col-1">
-            <label class="dropdown" style="transform: scale(0.9)">
-  
-              <div class="btn btn-dark">
-                <i class="fas fa-bars"></i>
-              </div>
-            
-              <input type="checkbox" class="dd-input" id="test">
-            
-              <ul class="dd-menu">
-                <li>
-                  <a href="{{ route("laporan.detail", $laporan->id) }}" style="text-decoration: none; color: black; text-align:center;">
-                    <i class="fas fa-eye"></i>{{ __("  Lihat") }}
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li class="">
-                  <form action="{{ route("laporan.delete", $laporan->id) }}" method="POST">
-                    @csrf
-                    <button style="outline: none; border: none; background: none; text-align:center;"><i class="fas fa-trash"></i>{{ __("  Hapus") }}</button>
-                  </form>
-                </li>
-              </ul>
-              
-            </label>
-          </div> --}}
-        {{-- </div>
-        <div class="mt-3">
-          <h3 class="" style="font-weight: bolder;">{{$laporan->judul}}</h3>
-        </div>
-        <div class="mt-3">
-          {!!Str::limit($laporan->isi, 500)!!}
-        </div>
-  
-        <div class="footer mt-3 ms-2">
-          <p class="opacity-75"><i class="fas fa-comment me-2"></i>{{ \App\Models\Tanggapan::where("id_laporan", $laporan->id)->count()." tanggapan" }}</p>
-        </div> --}}
-        
-      {{-- </div> --}}
     </li>
   </a>
   @empty
@@ -189,13 +140,8 @@
     {{ $dataTable->table() }}
   </div>
 </div>
+@endif
 @push('scripts')
-<script>
-  $(document).ready(function(){
-    $('.modal').modal('show');
-});
-</script>
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush
-@endif
 @endsection

@@ -184,7 +184,7 @@
             <img src="/storage/foto_laporan/{{$laporan->foto}}" alt="Gambar tidak ditemukan" style="width: 300px;" class="rounded mt-3">
           </div>
 
-          @if(Auth::user()->role_id != 1)
+          @if(Auth::user()->role_id != 1 && !Str::contains(Route::currentRouteName(), "archived"))
           
           <div class="mt-3"></div>
                 <form method="POST"  action="{{ route("tanggapan.store") }}">
@@ -237,7 +237,7 @@
         @forelse($tanggapans as $tanggapan)
         <div class="tanggapan">
             <div class="m-2 rounded bg-white">
-                <div class="p-3">
+                <div class="p-3 inner-inner-tanggapan">
                     <div class="d-flex">
                         <span class="" style="font-weight: bold;">
                             <?php $user = \App\Models\User::where("id", $tanggapan->id_user)->first() ?>
@@ -253,7 +253,6 @@
                 </div>
             </div>
         </div>
-
     @empty
     <div class="w-100 ">
         <div class="col-12 text-center">
@@ -263,6 +262,7 @@
     @endforelse
     </div>
 </div>
+
 @if(Auth::user()->role_id != 1)
 <div class="row" style="margin-top: 200px;">
   <div class="col-12 mt-3 mb-3 form-control bg-white">

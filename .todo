@@ -1,2 +1,9 @@
-# set visible (archived laporan)
+# set visible (archived laporan) --done
 # user route if admin abort 404
+
+# archive tanggapan
+# set visible (archived tanggapan)
+# permanent delete (laporan, tanggapan)
+
+# create component button-launch
+# create component modal
