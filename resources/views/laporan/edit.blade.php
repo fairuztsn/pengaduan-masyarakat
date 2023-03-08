@@ -1,5 +1,7 @@
 @extends("layouts.app")
+@section("title", "Laporan Edit - ".$laporan->judul)
 @section("content")
+<h3>Laporan Pengaduan - Edit</h3>
 <form action="{{ route("laporan.update", $laporan->id) }}" method="POST" class="form" enctype="multipart/form-data">
     @csrf
   <div class="mb-3">

@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title", "Archived - ".$laporan->judul)
 @section("custom-css")
 <style>
   /* Dropdown */

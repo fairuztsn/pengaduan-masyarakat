@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title", "Archived")
 @section("content")
 <div class="row">
   <div class="col-12 text-center opacity-50 mt-2 mb-3">

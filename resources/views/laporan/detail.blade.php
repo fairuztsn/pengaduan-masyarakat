@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title", $laporan->judul)
 @section("custom-css")
 <style>
   /* Dropdown */
@@ -85,8 +86,6 @@
 @endsection
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
-
-    
     <div class="rounded bg-white">
         <div class="p-3">
           <div class="row">
@@ -103,6 +102,8 @@
                 @endif
               </span>
               @endif
+              
+              <h3>{{ $laporan->judul }}</h3>
               <div class="d-flex" style="font-weight: 800;">
                 <span class="me-2"> {{ \App\Models\User::where("id", $laporan->id_user)->first()->nama }} </span>
                 <span class="opacity-75">  {{"@".\App\Models\User::where("id", $laporan->id_user)->first()->username}}</span>

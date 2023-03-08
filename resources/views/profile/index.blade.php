@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title", "@".$user->username)
 @section("content")
 <section class="h-100 gradient-custom-2">
     <div class="container py-5 h-100">

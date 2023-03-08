@@ -173,12 +173,21 @@ class LaporanController extends Controller
 
     public function archive(Request $request) {
         $report = Laporan::find($request->id);
-        $report->deleted_at =  Carbon::now()->toDateTimeString();
+        $report->deleted_at = Carbon::now()->toDateTimeString();
         $report->update();
 
-        return response()->json([
-            "response" => "Success"
-        ]);
+        if(isset($request->returns)) {
+            if($request->returns == "view") {
+                return back()->with("message", [
+                    "type" => "danger",
+                    "message" => "Berhasil mengarsipkan laporan"
+                ]);
+            }
+        }else {
+            return response()->json([
+                "response" => "Success"
+            ]);
+        }
     }
 
     public function archived($id) {

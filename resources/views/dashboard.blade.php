@@ -1,6 +1,12 @@
 @extends("layouts.app")
+@section("title", "Dashb")
 @section("content")
-Disini nanti grafik
+<div class="bg-white rounded p-5">
+  <h4>Dashboard</h4>
+  <div class="">
+    Disini nanti grafik
+  </div>
+</div>
     {{-- <ul class="list-group">
       @foreach($report as $laporan)
       <li class="list-group-item m-2 rounded" style="box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">

@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title", "Archived Laporan")
 @section("content")
 <div class="bg-white p-5">
     {{ $dataTable->table() }}
