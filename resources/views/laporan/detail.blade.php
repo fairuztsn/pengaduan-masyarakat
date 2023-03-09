@@ -287,7 +287,7 @@
         <form action="">
           @csrf
           <label for="" class="text-sm"><i class="fas fa-info me-2"></i>Dengan mengarsipkan, laporan ini tidak akan tampil dimanapun dan hanya bisa diakses melalui url  <a href="{{ route('archived.laporan') }}" class="link-danger" style="font-weight: bolder;">/archive/laporan/</a> oleh admin.</label>
-          <button class="btn btn-danger mt-2 mb-2" onclick="archive()"> <i class="fas fa-archive me-3"></i> Arsipkan laporan ini</button>
+          <button class="btn btn-dark mt-2 mb-2" onclick="archive()"> <i class="fas fa-archive me-3"></i> Arsipkan laporan ini</button>
         </form>
       </div>
   </div>
@@ -322,6 +322,8 @@
               }
           }
       });
+    }else {
+      //
     }
   }
 

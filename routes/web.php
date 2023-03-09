@@ -36,7 +36,6 @@ Route::middleware('auth')->group(function () {
         Route::get("/history", [LaporanController::class, "history"])->name("laporan.history");
         Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
 
-        Route::get("/{id}/edit", [LaporanController::class, "edit"])->name("laporan.edit");
         Route::post("/{id}/update", [LaporanController::class, "update"])->name("laporan.update");
         Route::post("/{id}/delete", [LaporanController::class, "destroy"])->name("laporan.delete");
 
@@ -44,14 +43,14 @@ Route::middleware('auth')->group(function () {
         Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
     });
 
-    Route::middleware("onlyadmin")->group(function() {
-        Route::prefix("tanggapan")->group(function() {
+    Route::middleware("onlyadmin")->group( function() {
+        Route::prefix("tanggapan")->group( function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::post("{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
         });
 
-        Route::prefix("archived")->group(function() {
+        Route::prefix("archive")->group( function() {
             Route::get("/", function() {return view("archive.index");})->name("archived.index");
 
             Route::prefix("laporan")->group(function() {
@@ -61,18 +60,14 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        Route::prefix("user")->group(function() {
+        Route::prefix("user")->group( function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");
             Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
         });
-
-        Route::get("/search", [Controller::class, "search"])->name("search");
     });
 });
 
-Route::get("/test", function() {
-    return view("test");
-});
+Route::get("/test", [Controller::class, "test"]);
 
 require __DIR__.'/auth.php';
 

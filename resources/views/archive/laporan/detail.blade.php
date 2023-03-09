@@ -165,41 +165,36 @@
         <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-warning me-3"></i>Danger Zone</p>
         <form action="">
             @csrf
-            <label for="" class="text-sm"><i class="fas fa-info me-2"></i>Dengan melakukan unarchive, laporan ini akan bisa diakses dan dilihat oleh semua user.</label><br>
-            <button class="btn btn-danger form-control mt-2 mb-2" onclick="unarchive()"> <i class="fas fa-eye me-3"></i>Unarchive</button>
+            <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan melakukan unarchive, laporan ini akan bisa diakses dan dilihat oleh semua user.</label><br>
+            <button class="btn btn-outline-danger mt-2 mb-2" onclick="unarchive()"> <i class="fas fa-eye me-3"></i>Unarchive</button>
+        </form>
+
+        <form action="{{ route("laporan.delete", $laporan->id) }}" class="mt-3" method="POST">
+          @csrf
+          <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan menghapus laporan ini, semua yang berkaitan dengan laporan ini seperti tanggapan, gambar, dll akan dihapus dari storage dan database.</label><br>
+
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="fas fa-trash me-3"></i> Hapus permanen
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-body">
+                  Apakah anda yakin akan menghapus laporan ini <i class="fas fa-question ms-2"></i>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                  <button type="submit" class="btn btn-danger">Ya, saya yakin</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
     </div>
 </div>
 <script>
-    function unarchive() {
-    const confirm_field = `Apakah anda yakin ingin unarchive laporan ini?`
-
-    if(confirm(confirm_field)) {
-      // AJAX
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-          });
-
-      $.ajax({
-          type: "POST",
-          url: "<?php echo route('laporan.unarchive') ?>",
-          dataType: 'JSON',
-          data: {
-              "_token" : "{{ csrf_token() }}",
-              "id" : "<?php echo $laporan->id ?>"
-          },
-          success: function (data) {
-              //
-              if(data.response === "Success") {
-                  window.location.href = "<?php echo route('archived.laporan') ?>"
-              }else {
-                alert(data.response);
-              }
-          }
-      });
-    }
-  }
 </script>
 @endsection

@@ -16,4 +16,8 @@ class Controller extends BaseController
     public function search(Request $request) {
         return view("layouts.search");
     }
+
+    public function test() {
+        return \App\Models\User::find(3)->role;
+    }
 }

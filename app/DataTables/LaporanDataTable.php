@@ -45,7 +45,13 @@ class LaporanDataTable extends DataTable
                 return <<<html
                 <a href="$url" class="link-dark" target="_blank">$query->foto</a>
                 html;
-            })
+            })->editColumn("nama_user", function($query) {
+                return $query->user->nama;
+                // return \App\Models\User::where("nama", "LIKE", "%Lu%")->first()->id;
+            })->filterColumn("nama_user", function($query, $keyword) {
+                // idk
+                $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 1);
+            })->orderColumn("nama_user", false)
             ->rawColumns(["foto", "action"])
             ->setRowId('id');
     }
@@ -102,6 +108,7 @@ class LaporanDataTable extends DataTable
             Column::make("judul"),
             Column::make("tanggal_kejadian"),
             Column::make("id_user"),
+            Column::make("nama_user"),
             Column::make("foto"),
             Column::make('status'),
             Column::make('created_at'),

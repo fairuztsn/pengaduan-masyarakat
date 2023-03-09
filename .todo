@@ -1,6 +1,3 @@
-# set visible (archived laporan) --done
-# user route if admin abort 404
-
 # archive tanggapan
 # set visible (archived tanggapan)
 # permanent delete (laporan, tanggapan)
@@ -11,4 +8,4 @@
 # create docs where to archive, unarchive, update status
 # create sub-title
 
-# find a way to search role (relationship)
+# crud user

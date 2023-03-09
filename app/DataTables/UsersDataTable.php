@@ -30,8 +30,14 @@ class UsersDataTable extends DataTable
                 <a href="$route" class="btn btn-dark"><i class="fas fa-eye"></i></a>
                 html;
             })
-            ->editColumn("role_id", function($query) {
+            ->editColumn("role", function($query) {
                 return $query->role->name;
+            })
+            ->filterColumn("role", function($query, $keyword) {
+                $query->where("role_id", \App\Models\Roles::where("name", "LIKE", "%".$keyword."%")->first()->id);
+            })
+            ->orderColumn("role", function($query, $order) {
+                $query->orderBy("role_id", $order);
             })
             ->setRowId('id');
     }
@@ -44,7 +50,7 @@ class UsersDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model::where("role_id", "!=", 3);
+        return $model->newQuery();
     }
 
     /**
@@ -87,8 +93,9 @@ class UsersDataTable extends DataTable
             Column::make('id'),
             Column::make('nik'),
             Column::make("nama"),
+            Column::make("email"),
             Column::make("username"),
-            Column::make("role_id"),
+            Column::make("role"),
             Column::make('created_at'),
         ];
     }

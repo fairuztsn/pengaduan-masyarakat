@@ -1,6 +1,15 @@
 @extends("layouts.app")
 @section("title", "Buat Laporan")
 @section("content")
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ route("laporan.store") }}" method="POST" class="form" enctype="multipart/form-data">
     @csrf
   <div class="mb-3">

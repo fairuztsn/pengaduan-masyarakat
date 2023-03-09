@@ -53,6 +53,13 @@ class LaporanController extends Controller
     }
 
     public function store(Request $request) {
+        $validate = $request->validate([
+            "title" => ["required", "max:100"],
+            "photo" => ["required", "mimes:png,jpg,jpeg,gif"],
+            "report" => ["required"],
+            "date" => ["required"]
+        ]);
+
         $laporan = new Laporan();
 
         $laporan->judul = $request->title;
@@ -65,7 +72,6 @@ class LaporanController extends Controller
             $request->file('photo')->storeAs('public/foto_laporan', $newname);
             $laporan->foto = $newname;
         }
-
 
         $laporan->save();
 
@@ -161,6 +167,13 @@ class LaporanController extends Controller
 
     public function destroy($id) {
         $report = Laporan::find($id);
+
+        if(isset($report->tanggapan)) {
+            foreach($report->tanggapan as $tanggapan) {
+                Tanggapan::find($tanggapan->id)->delete();
+            }
+        }
+
         if (Storage::exists("/public/foto_laporan/".$report->foto)) {
             $this->removeImg($report->foto);
         }
