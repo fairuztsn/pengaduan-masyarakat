@@ -1,13 +1,13 @@
 @extends("layouts.app")
 @section("title", "User")
 @section("content")
-<div class="bg-white rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
-    <div class="p-5">
+<div class="bg-white rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" style="transform:scale(0.9)">
+  <div class="d-flex justify-content-center align-items-center" >
+    <div class="table p-5">
       <h3>User</h3>
-      <div class="table">
-        {{ $dataTable->table() }}
-      </div>
+      {{ $dataTable->table() }}
     </div>
+  </div>
 </div>
 @endsection
 

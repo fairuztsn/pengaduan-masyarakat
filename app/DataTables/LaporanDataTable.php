@@ -25,17 +25,16 @@ class LaporanDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $route = route("laporan.detail", $query->id);
-                $action = route("laporan.archive", [
-                    "id" => $query->id,
-                    "returns" => "view"
-                ]);
+                $action = route("laporan.archive");
                 $csrf_token = csrf_token();
                 return <<<html
                 <div class="d-flex">
                 <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 <form action="$action" method="POST">
                     <input type="hidden" name="_token" value="$csrf_token" />
-                    <button class="btn btn-danger"><i class="fas fa-archive"></i></button>
+                    <input type="hidden" name="id" value="$query->id"/>
+                    <input type="hidden" name="returns" value="view"/>
+                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                 </form>
                 </div>
                 html;

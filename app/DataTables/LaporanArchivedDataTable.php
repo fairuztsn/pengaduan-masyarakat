@@ -105,6 +105,7 @@ class LaporanArchivedDataTable extends DataTable
             Column::make("judul"),
             Column::make("tanggal_kejadian"),
             Column::make("id_user"),
+            Column::make("nama_user"),
             Column::make("foto"),
             Column::make('status'),
             Column::make('created_at'),

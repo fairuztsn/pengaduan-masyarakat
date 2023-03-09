@@ -12,7 +12,6 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-
 class TanggapanDataTable extends DataTable
 {
     /**
@@ -102,6 +101,7 @@ class TanggapanDataTable extends DataTable
             Column::make('id_laporan'),
             Column::make("tanggapan"),
             Column::make("id_user"),
+            Column::make("nama_user"),
             Column::make("nama_user"),
             Column::make('created_at'),
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Route;
 use Illuminate\Http\Request;
 use App\Models\Laporan;
 use App\Models\Tanggapan;
@@ -167,8 +168,8 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function destroy($id) {
-        $report = Laporan::find($id);
+    public function destroy(Request $request) {
+        $report = Laporan::find($request->id);
 
         if(isset($report->tanggapan)) {
             foreach($report->tanggapan as $tanggapan) {
@@ -195,7 +196,7 @@ class LaporanController extends Controller
             if($request->returns == "view") {
                 return back()->with("message", [
                     "type" => "danger",
-                    "message" => "Berhasil mengarsipkan laporan"
+                    "message" => "Berhasil menghapus laporan"
                 ]);
             }
         }else {
