@@ -27,7 +27,7 @@ class TanggapanDataTable extends DataTable
             ->addColumn('action', function($query) {
                 $csrf_token = csrf_token();
                 $action = route("tanggapan.delete", $query->id);
-                $route = route("laporan.detail", $query->id_laporan);                
+                $route = route("laporan.detail", $query->id_laporan)."#tanggapan$query->id";                
                 
                 return <<<html
                 <div class="d-flex">
@@ -39,11 +39,12 @@ class TanggapanDataTable extends DataTable
                 </div>
                 
                 html;
-            })
-            // ->editColumn("id_user", function($query) {
-            //     $user = new \App\Models\User();
-            //     return "{$user::where("id", $query->id_user)->first()->username}#{$query->id_user}";
-            // })
+            })->editColumn("nama_user", function($query) {
+                return $query->user->nama;
+            })->filterColumn("nama_user", function($query, $keyword) {
+                // idk
+                $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 1);
+            })->orderColumn("nama_user", false)
             ->setRowId('id');
     }
 
@@ -101,6 +102,7 @@ class TanggapanDataTable extends DataTable
             Column::make('id_laporan'),
             Column::make("tanggapan"),
             Column::make("id_user"),
+            Column::make("nama_user"),
             Column::make('created_at'),
         ];
     }

@@ -236,7 +236,7 @@
     <div class="w-100"></div>
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
-        <div class="tanggapan">
+        <div class="tanggapan" id="tanggapan{{$tanggapan->id}}">
             <div class="m-2 rounded bg-white">
                 <div class="p-3 inner-inner-tanggapan">
                     <div class="d-flex">

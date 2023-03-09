@@ -16,6 +16,10 @@ class Tanggapan extends Model
     ];
 
     public function laporan(): BelongsTo {
-        return $this->belongsTo(Laporan::class, "id_laporan");
+        return $this->belongsTo(Laporan::class, "id_laporan", "id");
+    }
+
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class, "id_user", "id");
     }
 }

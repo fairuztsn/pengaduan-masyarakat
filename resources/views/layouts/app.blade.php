@@ -41,11 +41,6 @@
 						<i class="align-middle" data-feather="book"></i> <span class="align-middle">Riwayat Laporan</span>
 						</a>
 					</li>
-					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "notifikasi" ? "active" : "" }}">
-						<a class="sidebar-link" href="{{ route("laporan.index") }}">
-						<i class="align-middle fas fa-bell"></i> <span class="align-middle">Notifikasi</span>
-						</a>
-					</li>
 					@endif
 
 					{{-- if role is petugas or admin --}}

@@ -34,10 +34,10 @@ Route::middleware('auth')->group(function () {
         
         Route::post("/store", [LaporanController::class, "store"])->name("laporan.store")->middleware([OnlyUser::class]);
         Route::get("/history", [LaporanController::class, "history"])->name("laporan.history");
-        Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
 
-        Route::post("/{id}/update", [LaporanController::class, "update"])->name("laporan.update");
-        Route::post("/{id}/delete", [LaporanController::class, "destroy"])->name("laporan.delete");
+        Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
+        Route::post("/{id}", [LaporanController::class, "update"])->name("laporan.update");
+        Route::post("/{id}", [LaporanController::class, "destroy"])->name("laporan.delete");
 
         Route::post("/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
         Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix("tanggapan")->group( function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
-            Route::post("{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
+            Route::post("/{id}", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
         });
 
         Route::prefix("archive")->group( function() {
@@ -55,8 +55,9 @@ Route::middleware('auth')->group(function () {
 
             Route::prefix("laporan")->group(function() {
                 Route::get("/", [ArchivedController::class, "laporan"])->name("archived.laporan");
+
                 Route::get("/{id}", [LaporanController::class, "archived"])->name("archived.laporan.detail");
-                Route::post("/unarchive", [LaporanController::class, "unarchive"])->name("laporan.unarchive");
+                Route::post("/{id}", [LaporanController::class, "unarchive"])->name("laporan.unarchive");
             });
         });
 

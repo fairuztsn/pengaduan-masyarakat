@@ -24,7 +24,9 @@ class LaporanController extends Controller
 
     public function dashboard() {
         $user_role_id = Auth::user()->role_id;
-        return $user_role_id == 1 ? view("laporan.create") : view("dashboard", [
+        return $user_role_id == 1 ? 
+        view("laporan.create") 
+        : view("dashboard", [
             "report" => Laporan::whereNull("deleted_at")->orderBy("created_at", "desc")->get()
         ]);
     }
