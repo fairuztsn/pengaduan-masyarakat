@@ -15,6 +15,7 @@ use App\Http\Controllers\ArchivedController;
 // Middlewares
 use App\Http\Middleware\OnlyAdmin;
 use App\Http\Middleware\OnlyUser;
+use App\Models\Tanggapan;
 
 Auth::routes();
 
@@ -30,11 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get("/", [LaporanController::class, "dashboard"])->name("dashboard");
 
     Route::prefix("laporan")->group(function() {
-        Route::post("/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
-        
         Route::get("/", [LaporanController::class, "index"])->name("laporan.index");
         
         Route::post("/store", [LaporanController::class, "store"])->name("laporan.store")->middleware([OnlyUser::class]);
+        Route::post("/{id}/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
         Route::get("/history", [LaporanController::class, "history"])->name("laporan.history");
 
         Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::post("/{id}", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
+            Route::post("/{id}/archive", [TanggapanController::class, "archive"])->name("tanggapan.archive");
         });
 
         Route::prefix("archive")->group( function() {
@@ -57,9 +58,14 @@ Route::middleware('auth')->group(function () {
 
             Route::prefix("laporan")->group(function() {
                 Route::get("/", [ArchivedController::class, "laporan"])->name("archived.laporan");
-
                 Route::get("/{id}", [LaporanController::class, "archived"])->name("archived.laporan.detail");
-                Route::post("/{id}", [LaporanController::class, "unarchive"])->name("laporan.unarchive");
+                Route::post("/{id}/unarchive", [LaporanController::class, "unarchive"])->name("laporan.unarchive");
+            });
+
+            Route::prefix("tanggapan")->group(function() {
+                Route::get("/", [ArchivedController::class, "tanggapan"])->name("archived.tanggapan");
+                Route::get("/{id}", [TanggapanController::class, "archived"])->name("archived.tanggapan.detail");
+                Route::post("/{id}/archive", [TanggapanController::class, "archive"]);
             });
         });
 
