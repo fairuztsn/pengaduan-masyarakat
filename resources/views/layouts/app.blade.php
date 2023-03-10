@@ -14,6 +14,22 @@
 	
     @vite(['resources/js/app.js'])
 
+	<style>
+		@font-face {
+			font-family: Poppins;
+			src: url("/fonts/poppins/Poppins-Regular.ttf");
+			font-weight: normal;
+			font-style: normal;
+
+		}
+		* {
+			font-family: Poppins;
+		}
+
+		table {
+			font-size: 10px;
+		}
+	</style>
 	@yield("custom-css")
 </head>
 <body>
@@ -97,7 +113,7 @@
 			</nav>
 			@endif
 
-			<main class="content bg-white">
+			<main class="content">
 				@if(Session::has("message"))
 					<div class="alert alert-{{ Session::get("message")["type"] }}" role="alert">
 						{{ Session::get("message")["message"] }}

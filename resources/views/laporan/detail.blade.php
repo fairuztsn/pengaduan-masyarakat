@@ -83,24 +83,19 @@
   }
 
   .tanggapan {
-    transition: 0.2s;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
-  }
-
-  .tanggapan:hover {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition: 0.4s;
   }
 
   .tanggapan:active {
     transform: scale(0.99);
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    opacity: 0.8;
   }
   </style>
 
 @endsection
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
-    <div class="rounded bg-white p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+    <div class="rounded bg-white p-3" style="">
         <div class="p-3">
           <div class="row">
             <div class="col-12">
@@ -176,9 +171,10 @@
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
           <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" style="text-decoration: none;color: black;">
-            <div style="background-color:white;" class="p-3 rounded tanggapan" >
-              <div class="creator fw-bolder">
-                {{ $tanggapan->user->username }}
+            <div style="background-color:white;" class="p-4 rounded tanggapan" >
+              <div class="creator d-flex created_at fw-bolder">
+                <span class="me-3">{{ $tanggapan->user->username }}</span>
+                <span>{{ $tanggapan->created_at }}</span>
               </div>
               <div class="field">
                 {{ $tanggapan->tanggapan }}
