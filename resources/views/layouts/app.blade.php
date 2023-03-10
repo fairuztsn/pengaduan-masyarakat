@@ -97,7 +97,7 @@
 			</nav>
 			@endif
 
-			<main class="content">
+			<main class="content bg-white">
 				@if(Session::has("message"))
 					<div class="alert alert-{{ Session::get("message")["type"] }}" role="alert">
 						{{ Session::get("message")["message"] }}

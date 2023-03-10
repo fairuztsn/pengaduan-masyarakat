@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 use App\Models\Tanggapan;
 use App\DataTables\TanggapanDataTable;
@@ -12,14 +13,9 @@ use App\DataTables\TanggapanDataTable;
 class TanggapanController extends Controller
 {
     //
-
-    // "id_laporan", "tanggal_tanggapan", "tanggapan", "id_user", "created_at","updated_at"
     public function index(TanggapanDataTable $dataTable){
 
         return $dataTable->render("tanggapan.index");
-        // return view("tanggapan.index", [
-        //     "tanggapans" => Tanggapan::all()
-        // ]);
     }
 
     public function destroy($id) {
@@ -43,6 +39,34 @@ class TanggapanController extends Controller
         return response()->json([
             "message" => "Done"
         ]);
+    }
 
+    public function archive($id) {
+        $tanggapan = Tanggapan::find($id);
+        $tanggapan->deleted_at = Carbon::now()->toDateTimeString();
+        $tanggapan->update();
+        return redirect()->route("tanggapan.index")->with("message", [
+            "message" => "Tanggapan berhasil dihapus",
+            "type" => "danger"
+        ]);
+    }
+
+    public function archived($id) {
+        $tanggapan = Tanggapan::where("id", $id)->whereNotNull("deleted_at")->first();
+
+        return $tanggapan == null ? abort(404) : view("archive.tanggapan.detail", [
+            "tanggapan"=>$tanggapan
+        ]);
+    }
+
+    public function unarchive($id) {
+        $tanggapan = Tanggapan::find($id);
+        $tanggapan->deleted_at = null;
+        $tanggapan->update();
+
+        return redirect()->route("archived.tanggapan")->with("message", [
+            "message" => "Berhasil unarchive tanggapan",
+            "type" => "success"
+        ]);
     }
 }

@@ -88,8 +88,8 @@
 <!-- Button trigger modal -->
 <!-- Button trigger modal -->
 <div class="report">
-    <div class="rounded bg-white">
-        <div class="p-3">
+    <div class="rounded bg-white p-4" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+        <div class="">
           <div class="row">
             <div class="col-12">
               @if($laporan->status != 0)
@@ -131,8 +131,8 @@
     <div class="w-100"></div>
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
-        <div class="tanggapan">
-            <div class="m-2 rounded bg-white">
+        <div class="tanggapan" id="tanggapan{{$tanggapan->id}}">
+            <div class="m-2 rounded bg-white p-4" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
                 <div class="p-3">
                     <div class="d-flex">
                         <span class="" style="font-weight: bold;">
@@ -163,15 +163,36 @@
 <div class="d-flex justify-content-center align-items-center" style="margin-top: 200px;">
     <div class="alert alert-danger m-3 form-control">
         <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-warning me-3"></i>Danger Zone</p>
-        <form action="">
-            @csrf
-            <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan melakukan unarchive, laporan ini akan bisa diakses dan dilihat oleh semua user.</label><br>
-            <button class="btn btn-outline-danger mt-2 mb-2" onclick="unarchive()"> <i class="fas fa-eye me-3"></i>Unarchive</button>
-        </form>
+        <form action="{{ route("laporan.unarchive", $laporan->id) }}" method="POST">
+          @csrf
+          <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan melakukan unarchive, laporan ini akan bisa diakses dan dilihat oleh semua user.</label><br>
+          <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#unarchiveModal">
+            <i class="fas fa-box-archive me-3"></i> Unarchive
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="unarchiveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Apakah anda yakin akan melakukan <span class="text-danger fw-bold">unarchive</span> pada laporan ini?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                  <button type="submit" class="btn btn-danger">Ya, saya yakin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
 
         <form action="{{ route("laporan.delete", $laporan->id) }}" class="mt-3" method="POST">
           @csrf
-          <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan menghapus laporan ini, semua yang berkaitan dengan laporan ini seperti tanggapan, gambar, dll akan dihapus dari storage dan database.</label><br>
+          <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Dengan menghapus laporan ini, semua yang berkaitan dengan laporan ini seperti tanggapan, foto, dll akan dihapus dari storage dan database.</label><br>
 
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -180,10 +201,15 @@
 
           <!-- Modal -->
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog">
               <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
                 <div class="modal-body">
-                  Apakah anda yakin akan menghapus laporan ini <i class="fas fa-question ms-2"></i>
+                  Apakah anda yakin akan <span class="text-danger fw-bold">menghapus permanen</span> laporan ini?
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>

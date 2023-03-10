@@ -86,7 +86,7 @@
 @endsection
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
-    <div class="rounded bg-white">
+    <div class="rounded bg-white p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
         <div class="p-3">
           <div class="row">
             <div class="col-12">
@@ -111,72 +111,6 @@
                 <span class="opacity-50 ms-3" style="">{{ $laporan->created_at }}</span>
               </div>
               </div>
-              {{-- @if(\App\Models\Tanggapan::where("id_laporan", $laporan->id)->count() > 0)
-              <div class="ms-5 btn btn-dark btn-sm m2-2">
-              <span class=""><i class="fas fa-check me-2"></i>Laporan ini sudah ditanggapi</span>
-              </div>
-              @endif --}}
-            </div>
-
-            {{-- Dropdown option --}}
-            {{-- @if(Auth::user()->role_id != 1)
-            <div class="col-2">
-                <label class="dropdown" style="transform: scale(0.9)">
-  
-                  <div class="btn btn-dark" style="position: relative; left: 70px;">
-                    <i class="fas fa-bars"></i>
-                  </div>
-                
-                  <input type="checkbox" class="dd-input" id="test">
-                
-                  
-                  <ul class="dd-menu">
-                    @if($laporan->status != "process")
-                    <li class="">
-                      <form action="{{ route("laporan.set", [
-                          "id" => $laporan->id, 
-                          "method" => 1
-                      ]) }}" method="POST">
-                        @csrf
-                        <button style="outline: none; border: none; background: none; text-align:center;">
-                            <i class="fas fa-bars-progress me-2"></i> Atur menjadi diproses
-                        </button>
-                      </form>
-                    </li>
-                    @endif
-                    <li class="divider"></li>
-                    @if($laporan->status != "tolak")
-                    <li class="">
-                      <form action="{{ route("laporan.set", [
-                            "id" => $laporan->id, 
-                            "method" => 2
-                        ]) }}" method="POST">
-                        @csrf
-                        <button style="outline: none; border: none; background: none; text-align:center;">
-                            <i class="fas fa-close me-2"></i> Atur menjadi ditolak
-                        </button>
-                      </form>
-                    </li>
-                    @endif
-                    <li class="divider"></li>
-                    @if($laporan->status != "selesai")
-                    <li class="">
-                      <form action="{{ route("laporan.set", [
-                          "id" => $laporan->id, 
-                          "method" => 3
-                      ]) }}" method="POST">
-                        @csrf
-                        <button style="outline: none; border: none; background: none; text-align:center;">
-                            <i class="fas fa-check me-2"></i> Atur menjadi selesai
-                        </button>
-                      </form>
-                    </li>
-                    @endif
-                  </ul>
-                  
-                </label>
-              </div>
-            @endif --}}
           </div>
           <div class="mt-3">
             {!! $laporan->isi !!}
@@ -236,8 +170,8 @@
     <div class="w-100"></div>
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
-        <div class="tanggapan" id="tanggapan{{$tanggapan->id}}">
-            <div class="m-2 rounded bg-white">
+        <div class="tanggapan rounded p-2" id="tanggapan{{$tanggapan->id}}" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+            <div class="m-2 bg-white">
                 <div class="p-3 inner-inner-tanggapan">
                     <div class="d-flex">
                         <span class="" style="font-weight: bold;">
@@ -284,49 +218,37 @@
 
       <div class="alert alert-danger m-3">
         <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-warning me-3"></i>Danger Zone</p>
-        <form action="">
+        <form action="{{ route("laporan.archive", $laporan->id) }}" method="POST">
           @csrf
-          <label for="" class="text-sm"><i class="fas fa-info me-2"></i>Dengan mengarsipkan, laporan ini tidak akan tampil dimanapun dan hanya bisa diakses melalui url  <a href="{{ route('archived.laporan') }}" class="link-danger" style="font-weight: bolder;">/archive/laporan/</a> oleh admin.</label>
-          <button class="btn btn-dark mt-2 mb-2" onclick="archive()"> <i class="fas fa-archive me-3"></i> Arsipkan laporan ini</button>
-        </form>
+          <label for="" class="text-sm"><i class="fas fa-circle-info me-2"></i>Hapus akan membuat laporan ini tidak bisa dilihat oleh user mana pun.</label><br>
+          <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <i class="fas fa-trash me-3"></i> Hapus laporan ini
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Apakah anda yakin akan <span class="text-danger fw-bold">hapus</span> laporan ini?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                  <button type="submit" class="btn btn-danger">Ya, saya yakin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
       </div>
   </div>
 </div>
 @endif
 <script>
-  function archive() {
-    const confirm_field = `Apakah anda yakin ingin mengarsipkan laporan ini?`
-
-    if(confirm(confirm_field)) {
-      // AJAX
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-          });
-
-      $.ajax({
-          type: "POST",
-          url: "<?php echo route('laporan.archive') ?>",
-          dataType: 'JSON',
-          data: {
-              "_token" : "{{ csrf_token() }}",
-              "id" : "<?php echo $laporan->id ?>"
-          },
-          success: function (data) {
-              //
-              if(data.response === "Success") {
-                  window.location.href = "<?php echo route('laporan.index') ?>"
-              }else {
-                alert(data.response);
-              }
-          }
-      });
-    }else {
-      //
-    }
-  }
-
   function myFunction() {
     const confirm_field = `Apakah yakin ingin mengubah status ke '${ $('#limbo').find(":selected").text().toLowerCase() }'?`
     

@@ -10,7 +10,8 @@
         </ul>
     </div>
 @endif
-<form action="{{ route("laporan.store") }}" method="POST" class="form" enctype="multipart/form-data">
+
+<form action="{{ route("laporan.store") }}" method="POST" class="form p-4 rounded" enctype="multipart/form-data" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
     @csrf
   <div class="mb-3">
     <input type="text" name="title" id="" class="form-control bg-white">

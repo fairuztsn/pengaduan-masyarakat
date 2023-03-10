@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class TanggapanDataTable extends DataTable
+class TanggapanArchivedDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,41 +23,35 @@ class TanggapanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function($query) {
-                $csrf_token = csrf_token();
-                $action = route("tanggapan.archive", $query->id);
-                $route = route("laporan.detail", $query->id_laporan)."#tanggapan$query->id";                
-                
-                return <<<html
-                <div class="d-flex">
-                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
-                <form action="$action" method="POST">
-                    <input type="hidden" name="_token" value="$csrf_token" />
-                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                </form>
-                </div>
-                
-                html;
-            })->editColumn("nama_user", function($query) {
-                return $query->user->nama;
-            })->filterColumn("nama_user", function($query, $keyword) {
-                // idk
-                $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 0);
-            })->orderColumn("nama_user", false)
-            ->setRowId('id');
+        ->addColumn('action', function($query) {
+            $csrf_token = csrf_token();
+            $action = route("tanggapan.unarchive", $query->id);
+            $route = route("archived.tanggapan.detail", $query->id);                
+            
+            return <<<html
+            <div class="d-flex">
+            <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
+            </div>
+            
+            html;
+        })->editColumn("nama_user", function($query) {
+            return $query->user->nama;
+        })->filterColumn("nama_user", function($query, $keyword) {
+            // idk
+            $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 0);
+        })->orderColumn("nama_user", false)
+        ->setRowId('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Tanggapan $model
+     * @param \App\Models\TanggapanArchived $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Tanggapan $model): QueryBuilder
     {
-        return $model->whereHas("laporan", function($query) {
-            $query->whereNull("deleted_at");
-        })->whereNull("deleted_at");
+        return $model->whereNotNull("deleted_at");
     }
 
     /**
@@ -68,7 +62,7 @@ class TanggapanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('tanggapan-table')
+                    ->setTableId('tanggapanarchived-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -93,16 +87,16 @@ class TanggapanDataTable extends DataTable
     {
         return [
             Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('id_laporan'),
-            Column::make("tanggapan"),
-            Column::make("id_user"),
-            Column::make("nama_user"),
-            Column::make('created_at'),
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
+                  Column::make('id'),
+                  Column::make('id_laporan'),
+                  Column::make("tanggapan"),
+                  Column::make("id_user"),
+                  Column::make("nama_user"),
+                  Column::make('created_at'),
         ];
     }
 
@@ -113,6 +107,6 @@ class TanggapanDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Tanggapan_' . date('YmdHis');
+        return 'TanggapanArchived_' . date('YmdHis');
     }
 }

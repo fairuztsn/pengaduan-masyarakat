@@ -51,7 +51,7 @@ class LaporanController extends Controller
         $report = Laporan::where("id", $id)->whereNull("deleted_at")->first();
         return $report == null ? abort(404) : view("laporan.detail", [
             "laporan"=> $report,
-            "tanggapans"=>$report->tanggapan
+            "tanggapans"=>$report->tanggapan->whereNull("deleted_at")
         ]);
     }
 
@@ -192,34 +192,30 @@ class LaporanController extends Controller
         $report->deleted_at = Carbon::now()->toDateTimeString();
         $report->update();
 
-        if(isset($request->returns)) {
-            if($request->returns == "view") {
-                return back()->with("message", [
-                    "type" => "danger",
-                    "message" => "Berhasil menghapus laporan"
-                ]);
-            }
-        }else {
-            return response()->json([
-                "response" => "Success"
-            ]);
-        }
+        return redirect()->route("laporan.index")->with("message", [
+            "type" => "danger",
+            "message" => "Berhasil menghapus laporan"
+        ]);
     }
 
     public function archived($id) {
         $report = Laporan::where("id", $id)->whereNotNull("deleted_at")->first();
+
         return $report == null ? abort(404) : view("archive.laporan.detail", [
             "laporan"=> $report,
             "tanggapans"=>$report->tanggapan
         ]);
     }
 
-    public function unarchive(Request $request) {
-        $report = Laporan::find($request->id);
+    public function unarchive($id) {
+        $report = Laporan::find($id);
         $report->deleted_at = null;
         $report->update();
         
-        return response()->json(["response" => "Success"]);
+        return redirect()->route("archived.laporan")->with("message", [
+            "message" => "Berhasil melakukan unarchive laporan",
+            "type" => "success"
+        ]);
     }
 
 }

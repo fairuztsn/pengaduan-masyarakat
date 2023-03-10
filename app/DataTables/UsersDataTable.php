@@ -34,7 +34,7 @@ class UsersDataTable extends DataTable
                 return $query->role->name;
             })
             ->filterColumn("role", function($query, $keyword) {
-                $query->where("role_id", \App\Models\Roles::where("name", "LIKE", "%".$keyword."%")->first()->id);
+                $query->where("role_id", \App\Models\Roles::where("name", "LIKE", "%".$keyword."%")->first()->id ?? 0);
             })
             ->orderColumn("role", function($query, $order) {
                 $query->orderBy("role_id", $order);

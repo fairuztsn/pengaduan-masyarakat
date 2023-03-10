@@ -29,11 +29,10 @@ class LaporanArchivedDataTable extends DataTable
                 //     <button class="btn btn-danger"><i class="fas fa-archive"></i></button>
                 // </form>
                 $route = route("archived.laporan.detail", $query->id);
-                $action = route("laporan.archive", $query->id);
                 $csrf_token = csrf_token();
                 return <<<html
                 <div class="d-flex">
-                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
+                <a href="$route" class="btn btn-dark ms-2"><i class="fas fa-eye"></i></a>
                 </div>
                 html;
             })->editColumn("foto", function($query) {

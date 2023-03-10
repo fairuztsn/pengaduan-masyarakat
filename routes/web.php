@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
             Route::prefix("tanggapan")->group(function() {
                 Route::get("/", [ArchivedController::class, "tanggapan"])->name("archived.tanggapan");
                 Route::get("/{id}", [TanggapanController::class, "archived"])->name("archived.tanggapan.detail");
-                Route::post("/{id}/archive", [TanggapanController::class, "archive"]);
+                Route::post("{id}/unarchive", [TanggapanController::class, "unarchive"])->name("tanggapan.unarchive");
             });
         });
 
