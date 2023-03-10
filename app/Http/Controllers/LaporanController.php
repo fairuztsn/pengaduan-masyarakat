@@ -181,7 +181,7 @@ class LaporanController extends Controller
             $this->removeImg($report->foto);
         }
         $report->delete();
-        return redirect()->route("laporan.index")->with("message", [
+        return redirect()->route("archived.laporan")->with("message", [
             "type" => "danger",
             "message" => "Laporan berhasil dihapus"
         ]);

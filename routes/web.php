@@ -49,7 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix("tanggapan")->group( function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
-            Route::post("/{id}", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
+            Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
+            Route::post("/{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
             Route::post("/{id}/archive", [TanggapanController::class, "archive"])->name("tanggapan.archive");
         });
 

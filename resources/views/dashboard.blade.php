@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Dashb")
+@section("title", "Dashboard")
 @section("content")
 <div class="bg-white rounded p-5">
   <h4>Dashboard</h4>

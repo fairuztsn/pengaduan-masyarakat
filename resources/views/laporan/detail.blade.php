@@ -81,6 +81,20 @@
     padding: 0;
     border-bottom: 1px solid #cccccc;
   }
+
+  .tanggapan {
+    transition: 0.2s;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
+  }
+
+  .tanggapan:hover {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+
+  .tanggapan:active {
+    transform: scale(0.99);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
   </style>
 
 @endsection
@@ -91,16 +105,7 @@
           <div class="row">
             <div class="col-12">
               @if($laporan->status != 0)
-              <span class="alert alert-{{ $laporan->status == "process" || $laporan->status == "selesai" ? "success" : "danger" }} form-control">
-                <i class="fas fa-info me-3"></i>
-                @if($laporan->status == "process")
-                Laporan ini sedang dalam proses
-                @elseif($laporan->status == "tolak")
-                Laporan ini dianggap tidak valid
-                @elseif($laporan->status == "selesai")
-                Laporan ini telah selesai
-                @endif
-              </span>
+              <span class="text-sm text-danger"><i class="fas fa-circle-info me-2"></i>Laporan ini sedang dalam status {{ $laporan->status }}</span>
               @endif
               
               <h3>{{ $laporan->judul }}</h3>
@@ -170,31 +175,23 @@
     <div class="w-100"></div>
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
-        <div class="tanggapan rounded p-2" id="tanggapan{{$tanggapan->id}}" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
-            <div class="m-2 bg-white">
-                <div class="p-3 inner-inner-tanggapan">
-                    <div class="d-flex">
-                        <span class="" style="font-weight: bold;">
-                            <?php $user = \App\Models\User::where("id", $tanggapan->id_user)->first() ?>
-                            {{ $user->id == Auth::id() ? "Anda" : $user->username }}
-                        <span>
-                        <span class="opacity-50 ms-2 created-at">{{__("  ".$tanggapan->created_at)}}</span>
-                        
-                    </div>
-        
-                    <div class="mt-3">
-                        {{ $tanggapan->tanggapan }}
-                    </div>
-                </div>
+          <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" style="text-decoration: none;color: black;">
+            <div style="background-color:white;" class="p-3 rounded tanggapan" >
+              <div class="creator fw-bolder">
+                {{ $tanggapan->user->username }}
+              </div>
+              <div class="field">
+                {{ $tanggapan->tanggapan }}
+              </div>
+            </div>
+          </a>
+        @empty
+        <div class="w-100 ">
+            <div class="col-12 text-center">
+                <span class="opacity-50">Belum ada tanggapan</span>
             </div>
         </div>
-    @empty
-    <div class="w-100 ">
-        <div class="col-12 text-center">
-            <span class="opacity-50">Belum ada tanggapan</span>
-        </div>
-    </div>
-    @endforelse
+        @endforelse
     </div>
 </div>
 
@@ -208,7 +205,7 @@
           @csrf
           <label class="text-sm" for="" class="mt-3 ms-1">Atur status</label>
           <select name="status" class="form-select" id="limbo" aria-label="Default select example" onchange="myFunction()">
-              <option disabled>Pilih status</option>
+              <option disabled {{ $laporan->status == 0 ? "selected" : "" }}>Pilih status</option>
               <option value="1" {{ $laporan->status == "process" ? "selected" : "" }} >Diproses</option>
               <option value="3" {{ $laporan->status == "selesai" ? "selected" : "" }}>Selesai</option>
               <option value="2" {{ $laporan->status == "tolak" ? "selected" : "" }}>Tolak</option>
@@ -249,6 +246,7 @@
 </div>
 @endif
 <script>
+
   function myFunction() {
     const confirm_field = `Apakah yakin ingin mengubah status ke '${ $('#limbo').find(":selected").text().toLowerCase() }'?`
     

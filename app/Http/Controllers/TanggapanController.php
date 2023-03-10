@@ -33,11 +33,19 @@ class TanggapanController extends Controller
         $tanggapan->id_laporan = $request->id;
         $tanggapan->tanggapan = $request->tanggapan;
         $tanggapan->id_user = Auth::id();
-
+        
         $tanggapan->save();
-
+        
         return response()->json([
             "message" => "Done"
+        ]);
+    }
+    
+    public function detail($id) {
+        $tanggapan = Tanggapan::where("id", $id)->whereNull("deleted_at")->first();
+
+        return $tanggapan == null ? abort(404) : view("tanggapan.detail", [
+            "tanggapan"=>$tanggapan
         ]);
     }
 
@@ -50,6 +58,7 @@ class TanggapanController extends Controller
             "type" => "danger"
         ]);
     }
+
 
     public function archived($id) {
         $tanggapan = Tanggapan::where("id", $id)->whereNotNull("deleted_at")->first();
