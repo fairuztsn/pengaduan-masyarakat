@@ -98,7 +98,19 @@
 @endsection
 @section("content")
 
-@if(Auth::user()->role_id == 1)
+<div class="bg-white rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" style="transform:scale(0.95)">
+  <div class="d-flex justify-content-center align-items-center" >
+    <div class="table p-5">
+      <h3>Laporan Pengaduan</h3>
+      {{ $dataTable->table() }}
+    </div>
+  </div>
+</div>
+@push('scripts')
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
+
+{{-- @if(Auth::user()->role_id == 1)
 <div class="row">
   <div class="col-4"></div>
   <div class="col-4 d-flex justify-content-center align-items-center">
@@ -147,5 +159,5 @@
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush
-@endif
+@endif --}}
 @endsection

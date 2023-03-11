@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 
 use App\DataTables\LaporanDataTable;
+use App\DataTables\UserLaporanDataTable;
 
 class LaporanController extends Controller
 {
@@ -32,15 +33,18 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function index(LaporanDataTable $dataTable) {
+    public function index(LaporanDataTable $dataTable, UserLaporanDataTable $userDataTable) {
         $user = Auth::user();
 
         if($user->role_id == 1) {
-            $val =  Laporan::where("id_user", Auth::id())->whereNull("deleted_at")->orderBy("created_at", "desc")->get();
+            
+        //     $val =  Laporan::where("id_user", Auth::id())->whereNull("deleted_at")->orderBy("created_at", "desc")->get();
 
-            return view("laporan.index", [
-                "report" => $val
-            ]);
+        //     return view("laporan.index", [
+        //         "report" => $val
+        //     ]);
+        // }
+            return $userDataTable->render("laporan.index");
         }
         else {
             return $dataTable->render('laporan.index');
