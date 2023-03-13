@@ -8,18 +8,45 @@
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset("img/password.png") }}" alt="" style="width: 200px;">
             </div>
-            <form action="">
+            <form action="" method="POST">
                 @csrf
                 <div class="mb-5 mt-3">
                     <label for="" class="form-label text-sm">Masukkan password-mu yang sekarang <span class="text-danger">*</span> </label>
-                    <input type="password" class="form-control">
+                    <input type="password" class="form-control" name="password" id="password">
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-outline-primary form-control" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Selanjutnya <i class="fas fa-arrow-right ms-5"></i></button>
+                    <button type="button" class="btn btn-outline-primary form-control" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" onclick="validate()">Selanjutnya <i class="fas fa-arrow-right ms-5"></i></button>
                 </div>
             </form>
             </div>
     </div>
     <div class="col-3"></div>
 </div>
+<script>
+    function validate() {
+        $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+          });
+
+      $.ajax({
+          type: "POST",
+          url: "{{ route('settings.profile.validate-old-password') }}",
+          dataType: 'JSON',
+          data: {
+              "_token" : "{{ csrf_token() }}",
+              "password": $('#password').val()
+          },
+          success: function (data) {
+              //
+              if(data.response === true) {
+                  location.reload();
+              }else {
+                console.log(data);
+              }
+          }
+      });
+    }
+</script>
 @endsection

@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix("laporan")->group(function() {
         Route::get("/", [LaporanController::class, "index"])->name("laporan.index");
-        
+        Route::post("/set", [LaporanController::class, "set"])->name("laporan.set")->middleware([OnlyAdmin::class]);
         Route::post("/store", [LaporanController::class, "store"])->name("laporan.store")->middleware([OnlyUser::class]);
         Route::post("/{id}/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
         Route::get("/history", [LaporanController::class, "history"])->name("laporan.history");
@@ -41,8 +41,6 @@ Route::middleware('auth')->group(function () {
         Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
         Route::post("/{id}", [LaporanController::class, "update"])->name("laporan.update");
         Route::post("/{id}", [LaporanController::class, "destroy"])->name("laporan.delete");
-
-        Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
     });
 
     Route::middleware("onlyadmin")->group( function() {

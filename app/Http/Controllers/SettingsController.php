@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 
@@ -65,8 +66,18 @@ class SettingsController extends Controller
     }
 
     public function validateOldPassword(Request $request) {
-        return response()->json([
-            "response" => $request
-        ]);
+        try {
+            $user = User::find(Auth::id());
+            return response()->json([
+                "response" => Hash::check($request->password, $user->password),
+                "expected" => $user->password,
+                "founded" => Hash::make($request->password),
+                "raw" => $request->password
+            ]);
+        }catch(\Exception $e) {
+            return response()->json([
+                "error" => $e
+            ]);
+        }
     }
 }

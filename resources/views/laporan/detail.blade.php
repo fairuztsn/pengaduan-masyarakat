@@ -100,7 +100,7 @@
           <div class="row">
             <div class="col-12">
               @if($laporan->status != 0)
-              <span class="text-sm text-danger"><i class="fas fa-circle-info me-2"></i>Laporan ini sedang dalam status {{ $laporan->status }}</span>
+              <span class="text-sm text-{{ ($laporan->status == "process" || $laporan->status == "selesai") ? "info" : "danger" }}"><i class="fas fa-circle-info me-2 mb-3"></i>status: {{ $laporan->status }}</span>
               @endif
               
               <h3>{{ $laporan->judul }}</h3>
