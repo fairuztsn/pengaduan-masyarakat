@@ -11,6 +11,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanggapanController;
 use App\Http\Controllers\ArchivedController;
+use App\Http\Controllers\SettingsController;
 
 // Middlewares
 use App\Http\Middleware\OnlyAdmin;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
         Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
     });
 
+    
+
     Route::middleware("onlyadmin")->group( function() {
         Route::prefix("tanggapan")->group(function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
@@ -75,8 +78,15 @@ Route::middleware('auth')->group(function () {
         Route::prefix("user")->group(function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");
             Route::get("/create", [UserController::class, "create"])->name("user.create");
+            Route::post("/store", [UserController::class, "store"])->name("user.store");
             Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
         });
+    });
+
+    Route::prefix("settings")->group(function() {
+        Route::get("/", [SettingsController::class, "index"])->name("settings.index");
+        Route::get("/profile", [SettingsController::class, "profile"])->name("settings.profile");
+        Route::post("/profile/update", [SettingsController::class, "updateProfile"])->name("settings.profile.update");
     });
 });
 

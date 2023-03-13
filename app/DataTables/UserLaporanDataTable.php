@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Laporan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -51,7 +52,7 @@ class UserLaporanDataTable extends DataTable
      */
     public function query(Laporan $model): QueryBuilder
     {
-        return $model->whereNull("deleted_at");
+        return $model->whereNull("deleted_at")->where("id_user", Auth::id());
     }
 
     /**

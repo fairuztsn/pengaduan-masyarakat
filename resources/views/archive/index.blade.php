@@ -11,7 +11,7 @@
 @section("content")
 <div class="row">
   <div class="col-12 text-center mt-2 mb-3">
-      <i class="fas fa-archive me-3"></i> Archive Section
+    <a href="{{ route("settings.index") }}" class="link-primary"><i class="fas fa-gear me-2"></i>Settings</a> > <span><i class="fas fa-archive me-2 ms-2"></i>Archive</span>
   </div>
 </div>
 <div class="list-group">

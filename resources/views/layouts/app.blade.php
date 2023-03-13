@@ -81,13 +81,13 @@
 						<i class="fas fa-user align-middle"></i> <span class="align-middle">User</span>
 						</a>
 					</li>
-
-					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "archived" ? "active" : "" }}">
-						<a class="sidebar-link" href="{{ route("archived.index") }}">
-						<i class="fas fa-archive align-middle"></i> <span class="align-middle">Archive</span>
+					@endif
+					
+					<li class="sidebar-item {{ Str::contains(Route::currentRouteName(), "settings") || Str::contains(Route::currentRouteName(), "archive") ? "active" : "" }}">
+						<a class="sidebar-link" href="{{ route("settings.index") }}">
+						<i class="fas fa-gear align-middle"></i> <span class="align-middle">Settings</span>
 						</a>
 					</li>
-					@endif
 
 					<li class="sidebar-header">
 						Authentication

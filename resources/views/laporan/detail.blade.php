@@ -170,7 +170,7 @@
     <div class="w-100"></div>
     <div class="col-12">
         @forelse($tanggapans as $tanggapan)
-          <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" style="text-decoration: none;color: black;">
+          <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" style="text-decoration: none;color: black;" class="m-3">
             <div style="background-color:white;" class="p-4 rounded tanggapan" >
               <div class="creator d-flex created_at fw-bolder">
                 <span class="me-3">{{ $tanggapan->user->username }}</span>

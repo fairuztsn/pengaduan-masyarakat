@@ -12,29 +12,32 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route("user.store") }}">
+    <form method="POST" action="{{ route("settings.profile.update") }}">
         @csrf
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="" name="email">
+          <input type="email" class="form-control" id="" name="email" value="{{ $email }}">
           <div id="" class="form-text">@error('email') {{ $message  }} @enderror</div>
         </div>
         <div class="mb-3">
             <label class="form-label">NIK</label>
-            <input type="number" class="form-control" id="" name="nik" min=0>
+            <input type="number" class="form-control" id="" name="nik" min=0 value="{{ $nik }}">
             <div id="" class="form-text"></div>
         </div>
         <div class="mb-3">
             <label class="form-label">Username</label>
-            <input type="text" class="form-control" id="" name="username">
+            <input type="text" class="form-control" id="" name="username" value="{{ $username }}">
             <div id="" class="form-text"></div>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama</label>
-            <input type="text" class="form-control" id="" name="nama">
+            <input type="text" class="form-control" id="" name="nama" value="{{ $nama }}">
             <div id="" class="form-text"></div>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus me-3"></i> Buat User</button>
+        <div class="mb-3">
+            <a href="#" class="link-primary"><i class="fas fa-key me-2"></i>Ubah password</a>
+        </div>
+        <button type="submit" class="btn btn-dark"><i class="fas fa-save me-3"></i> Simpan Perubahan</button>
       </form>
 </div>
 @endsection
