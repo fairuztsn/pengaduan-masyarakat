@@ -42,11 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::post("/{id}", [LaporanController::class, "update"])->name("laporan.update");
         Route::post("/{id}", [LaporanController::class, "destroy"])->name("laporan.delete");
 
-        
         Route::post("/set", [LaporanController::class, "set"])->name("laporan.set");
     });
-
-    
 
     Route::middleware("onlyadmin")->group( function() {
         Route::prefix("tanggapan")->group(function() {
@@ -86,7 +83,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix("settings")->group(function() {
         Route::get("/", [SettingsController::class, "index"])->name("settings.index");
         Route::get("/profile", [SettingsController::class, "profile"])->name("settings.profile");
+        Route::get("/profile/change-password", [SettingsController::class, "changePassword"])->name("settings.profile.change-password");
+
         Route::post("/profile/update", [SettingsController::class, "updateProfile"])->name("settings.profile.update");
+        Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])->name("settings.profile.validate-old-password");
     });
 });
 

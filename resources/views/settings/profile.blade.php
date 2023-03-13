@@ -30,12 +30,12 @@
             <div id="" class="form-text"></div>
         </div>
         <div class="mb-3">
-            <label class="form-label">Nama</label>
+            <label class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" id="" name="nama" value="{{ $nama }}">
             <div id="" class="form-text"></div>
         </div>
         <div class="mb-3">
-            <a href="#" class="link-primary"><i class="fas fa-key me-2"></i>Ubah password</a>
+            <a href="{{ route("settings.profile.change-password") }}" class="link-primary"><i class="fas fa-key me-2"></i>Ubah password</a>
         </div>
         <button type="submit" class="btn btn-dark"><i class="fas fa-save me-3"></i> Simpan Perubahan</button>
       </form>

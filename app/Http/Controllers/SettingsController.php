@@ -58,8 +58,15 @@ class SettingsController extends Controller
                 "message" => "Tidak ada perubahan yang dibuat"
             ]);
         }
+    }
 
+    public function changePassword() {
+        return view("settings.change-password");
+    }
 
-        return $request;
+    public function validateOldPassword(Request $request) {
+        return response()->json([
+            "response" => $request
+        ]);
     }
 }

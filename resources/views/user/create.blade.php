@@ -30,7 +30,7 @@
             <div id="" class="form-text"></div>
         </div>
         <div class="mb-3">
-            <label class="form-label">Nama</label>
+            <label class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" id="" name="nama">
             <div id="" class="form-text"></div>
         </div>
