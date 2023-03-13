@@ -32,4 +32,8 @@ class UserController extends Controller
                     })->orderBy("created_at", "desc")->take(2)->get()
         ]) : abort(404);
     }
+
+    public function create() {
+        return view("user.create");
+    }
 }

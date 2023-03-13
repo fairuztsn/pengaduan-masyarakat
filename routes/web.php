@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware("onlyadmin")->group( function() {
-        Route::prefix("tanggapan")->group( function() {
+        Route::prefix("tanggapan")->group(function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
@@ -69,9 +69,12 @@ Route::middleware('auth')->group(function () {
                 Route::post("{id}/unarchive", [TanggapanController::class, "unarchive"])->name("tanggapan.unarchive");
             });
         });
+    });
 
-        Route::prefix("user")->group( function() {
+    Route::middleware("onlyone")->group(function() {
+        Route::prefix("user")->group(function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");
+            Route::get("/create", [UserController::class, "create"])->name("user.create");
             Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
         });
     });
