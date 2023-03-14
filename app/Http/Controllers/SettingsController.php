@@ -70,13 +70,43 @@ class SettingsController extends Controller
             $user = User::find(Auth::id());
             return response()->json([
                 "response" => Hash::check($request->password, $user->password),
-                "expected" => $user->password,
-                "founded" => Hash::make($request->password),
-                "raw" => $request->password
+                "returns" => view("settings.partials.new-password")->render()
             ]);
         }catch(\Exception $e) {
             return response()->json([
                 "error" => $e
+            ]);
+        }
+    }
+
+    public function updatePassword(Request $request) {
+        $user = User::find(Auth::id());
+
+        // New-password and Re-typed-new-password are the same
+        if($request->password == $request->retyped_password) {
+
+            // Same as old password
+            if(Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    "response" => "same_as_old",
+                    "message" => "password-mu tidak boleh sama dengan yang lama",
+                    "icon" => "face-sad-tear"
+                ]);
+            }else {
+                $user->password = Hash::make($request->password);
+                $user->update();
+
+                return response()->json([
+                    "response" => "success",
+                    "message" => "password-mu berhasil diubah",
+                    "returns" => view("settings.partials.success-change-password")->render()
+                ]);
+            }
+        }else {
+            return response()->json([
+                "response" => "not_same",
+                "message" => "password yang diketik ulang tidak cocok dengan password baru yang kamu ketikkan",
+                "icon" => "face-sad-tear"
             ]);
         }
     }

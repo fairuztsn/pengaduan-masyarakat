@@ -83,8 +83,12 @@ Route::middleware('auth')->group(function () {
         Route::get("/profile", [SettingsController::class, "profile"])->name("settings.profile");
         Route::get("/profile/change-password", [SettingsController::class, "changePassword"])->name("settings.profile.change-password");
 
-        Route::post("/profile/update", [SettingsController::class, "updateProfile"])->name("settings.profile.update");
-        Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])->name("settings.profile.validate-old-password");
+        Route::post("/profile/update", [SettingsController::class, "updateProfile"])
+            ->name("settings.profile.update");
+        Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])
+            ->name("settings.profile.validate-old-password");
+        Route::post("/update-password", [SettingsController::class, "updatePassword"])
+            ->name("settings.profile.update-password");
     });
 });
 
