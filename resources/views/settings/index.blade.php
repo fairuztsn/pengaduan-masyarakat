@@ -2,7 +2,7 @@
 @section("title", "Settings")
 @section("custom-css")
 <style>
-  a.list-group-item {
+  a.list-group-item, button.list-group-item {
     padding: 20px;
     margin: 5px;
   }
@@ -27,5 +27,19 @@
       Archived
     </a>
     @endif
+
+    <div class="row mt-5">
+      <div class="col-12 text-center mt-2 mb-3">
+          <i class="fas fa-robot me-3"></i> Authentication <span class="translate opacity-50 text-sm ms-2">Autentikasi</span>
+      </div>
+    </div>
+
+    <form action="{{ route("logout") }}" method="POST" class="">
+    @csrf
+        <button class="list-group-item list-group-item-action form-control">
+          <span class="line me-5 text-danger" style="text-weight: bolder;"><i class="fas fa-power-off "></i></span>
+            Logout
+        </button>
+    </form>
   </div>
 @endsection

@@ -82,25 +82,25 @@
 						</a>
 					</li>
 					@endif
-					
+
+					<li class="sidebar-header">
+						Settings
+					</li>
+
 					<li class="sidebar-item {{ Str::contains(Route::currentRouteName(), "settings") || Str::contains(Route::currentRouteName(), "archive") ? "active" : "" }}">
 						<a class="sidebar-link" href="{{ route("settings.index") }}">
 						<i class="fas fa-gear align-middle"></i> <span class="align-middle">Settings</span>
 						</a>
 					</li>
 
-					<li class="sidebar-header">
-						Authentication
-					</li>
-
-					<li class="sidebar-item">
+					{{-- <li class="sidebar-item">
 						<form class="sidebar-link" action="{{ route("logout") }}" method="POST">
 							@csrf
 							<button class=" btn btn-danger form-control"><i class="align-middle fas fa-right-from-bracket"></i>
 								{{ " Log out" }}
 							</button>
 						</form>
-					</li>
+					</li> --}}
 		</nav>
 		@endif
 
