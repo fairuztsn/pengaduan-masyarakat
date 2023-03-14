@@ -175,12 +175,6 @@ class LaporanController extends Controller
     public function destroy(Request $request) {
         $report = Laporan::find($request->id);
 
-        if(isset($report->tanggapan)) {
-            foreach($report->tanggapan as $tanggapan) {
-                Tanggapan::find($tanggapan->id)->delete();
-            }
-        }
-
         if (Storage::exists("/public/foto_laporan/".$report->foto)) {
             $this->removeImg($report->foto);
         }
