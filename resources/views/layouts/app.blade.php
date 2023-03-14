@@ -59,6 +59,12 @@
 					</li>
 					@endif
 
+					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "tanggapan" ? "active" : "" }}">
+						<a class="sidebar-link" href="{{ route("tanggapan.index") }}">
+						<i class="fas fa-comment align-middle"></i> <span class="align-middle">Tanggapan</span>
+						</a>
+					</li>
+					
 					{{-- if role is petugas or admin --}}
 					@if(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
 					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "laporan" ? "active" : "" }}">
@@ -70,12 +76,6 @@
 
 					{{-- if role is admin --}}
 					@if(Auth::user()->role_id == 3)
-					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "tanggapan" ? "active" : "" }}">
-						<a class="sidebar-link" href="{{ route("tanggapan.index") }}">
-						<i class="fas fa-comment align-middle"></i> <span class="align-middle">Tanggapan</span>
-						</a>
-					</li>
-
 					<li class="sidebar-item {{ explode(".", Route::currentRouteName())[0] == "user" ? "active" : "" }}">
 						<a class="sidebar-link" href="{{ route("user.index") }}">
 						<i class="fas fa-user align-middle"></i> <span class="align-middle">User</span>

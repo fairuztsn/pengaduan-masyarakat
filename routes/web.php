@@ -45,7 +45,6 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware("onlyadmin")->group( function() {
         Route::prefix("tanggapan")->group(function() {
-            Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::post("/{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
             Route::post("/{id}/archive", [TanggapanController::class, "archive"])->name("tanggapan.archive");
@@ -69,6 +68,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix("tanggapan")->group(function() {  
+        Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
         Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
     });
 
@@ -88,6 +88,7 @@ Route::middleware('auth')->group(function () {
 
         Route::post("/profile/update", [SettingsController::class, "updateProfile"])->name("settings.profile.update");
         Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])->name("settings.profile.validate-old-password");
+        Route::post("/update-password", [SettingsController::class, "updatePassword"])->name("settings.profile.update-password");
     });
 });
 

@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Tanggapan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -22,13 +23,13 @@ class TanggapanDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))
+        return Auth::user()->role_id != 1 ? (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $csrf_token = csrf_token();
                 $action = route("tanggapan.archive", $query->id);
-                $route = route("laporan.detail", $query->id_laporan)."#tanggapan$query->id";                
+                $route = route("tanggapan.detail", $query->id);                
                 
-                return <<<html
+                return Auth::user()->role_id == 3 ? <<<html
                 <div class="d-flex">
                 <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 <form action="$action" method="POST">
@@ -37,6 +38,10 @@ class TanggapanDataTable extends DataTable
                 </form>
                 </div>
                 
+                html : <<<html
+                <div class="d-flex">
+                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
+                </div>
                 html;
             })->editColumn("nama_user", function($query) {
                 return $query->user->nama;
@@ -44,7 +49,29 @@ class TanggapanDataTable extends DataTable
                 // idk
                 $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 0);
             })->orderColumn("nama_user", false)
-            ->setRowId('id');
+            ->setRowId('id') : 
+            (new EloquentDataTable($query))
+            ->addColumn('action', function($query) {
+                $csrf_token = csrf_token();
+                $action = route("tanggapan.archive", $query->id);
+                $route = route("tanggapan.detail", $query->id);                
+                
+                return <<<html
+                <div class="d-flex">
+                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
+                </div>
+                html;
+            })->editColumn("nama_user", function($query) {
+                return $query->user->nama;
+            })->filterColumn("nama_user", function($query, $keyword) {
+                // idk
+                $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 0);
+            })->orderColumn("nama_user", false)
+            ->editColumn("judul_laporan", function($query) {
+                return $query->laporan->judul;
+            })->filterColumn("judul_laporan", function($query, $keyword) {
+                $query->where("id_laporan", \App\Models\Laporan::where("judul", "LIKE", "%".$keyword."%")->first()->id ?? 0);
+            })->orderColumn("judul_laporan", false)->setRowId('id');
     }
 
     /**
@@ -55,8 +82,10 @@ class TanggapanDataTable extends DataTable
      */
     public function query(Tanggapan $model): QueryBuilder
     {
-        return $model->whereHas("laporan", function($query) {
+        return Auth::user()->role_id != 1 ? $model->whereHas("laporan", function($query) {
             $query->whereNull("deleted_at");
+        })->whereNull("deleted_at") : $model->whereHas("laporan", function($query) {
+            $query->where("id_user", Auth::id())->whereNull("deleted_at");
         })->whereNull("deleted_at");
     }
 
@@ -91,7 +120,7 @@ class TanggapanDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        return Auth::user()->role_id != 1 ? [
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
@@ -101,6 +130,17 @@ class TanggapanDataTable extends DataTable
             Column::make('id_laporan'),
             Column::make("tanggapan"),
             Column::make("id_user"),
+            Column::make("nama_user"),
+            Column::make('created_at'),
+        ] : [
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
+            ->width(60)
+            ->addClass('text-center'),
+            Column::make('id'),
+            Column::make("judul_laporan"),
+            Column::make("tanggapan"),
             Column::make("nama_user"),
             Column::make('created_at'),
         ];

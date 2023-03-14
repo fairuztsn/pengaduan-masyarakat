@@ -68,10 +68,19 @@ class SettingsController extends Controller
     public function validateOldPassword(Request $request) {
         try {
             $user = User::find(Auth::id());
-            return response()->json([
-                "response" => Hash::check($request->password, $user->password),
-                "returns" => view("settings.partials.new-password")->render()
-            ]);
+            $valid = Hash::check($request->password, $user->password);
+
+            if($valid) {
+                return response()->json([
+                    "response" => $valid,
+                    "returns" => view("settings.partials.new-password")->render()
+                ]);
+            }else {
+                return response()->json([
+                    "response" => $valid,
+                    "message" => "Password salah"
+                ]);
+            }
         }catch(\Exception $e) {
             return response()->json([
                 "error" => $e
@@ -89,7 +98,7 @@ class SettingsController extends Controller
             if(Hash::check($request->password, $user->password)) {
                 return response()->json([
                     "response" => "same_as_old",
-                    "message" => "password-mu tidak boleh sama dengan yang lama",
+                    "message" => "Password-mu tidak boleh sama dengan yang lama",
                     "icon" => "face-sad-tear"
                 ]);
             }else {
@@ -98,14 +107,14 @@ class SettingsController extends Controller
 
                 return response()->json([
                     "response" => "success",
-                    "message" => "password-mu berhasil diubah",
+                    "message" => "Password-mu berhasil diubah",
                     "returns" => view("settings.partials.success-change-password")->render()
                 ]);
             }
         }else {
             return response()->json([
                 "response" => "not_same",
-                "message" => "password yang diketik ulang tidak cocok dengan password baru yang kamu ketikkan",
+                "message" => "Password yang diketik ulang tidak cocok dengan password baru yang kamu ketikkan",
                 "icon" => "face-sad-tear"
             ]);
         }

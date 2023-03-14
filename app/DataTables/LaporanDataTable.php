@@ -4,6 +4,8 @@ namespace App\DataTables;
 
 use App\Models\Laporan;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
+
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -11,6 +13,8 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+
+
 
 class LaporanDataTable extends DataTable
 {
@@ -27,7 +31,8 @@ class LaporanDataTable extends DataTable
                 $route = route("laporan.detail", $query->id);
                 $action = route("laporan.archive", $query->id);
                 $csrf_token = csrf_token();
-                return <<<html
+
+                return Auth::user()->role_id == 3 ? <<<html
                 <div class="d-flex">
                 <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 <form action="$action" method="POST">
@@ -36,6 +41,10 @@ class LaporanDataTable extends DataTable
                     <input type="hidden" name="returns" value="view"/>
                     <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                 </form>
+                </div>
+                html : <<<html
+                <div class="d-flex">
+                <a href="$route" class="btn btn-dark me-2"><i class="fas fa-eye"></i></a>
                 </div>
                 html;
             })->editColumn("foto", function($query) {

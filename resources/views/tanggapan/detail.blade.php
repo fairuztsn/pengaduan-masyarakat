@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Archived Tanggapan #$tanggapan->id")
+@section("title", "Tanggapan #$tanggapan->id")
 @section("content")
 <div class="rounded p-5" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
     <table class="table">

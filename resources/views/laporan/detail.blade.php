@@ -209,6 +209,7 @@
         </form>
       </div>
 
+      @if(Auth::user()->role_id == 3)
       <div class="alert alert-danger m-3">
         <p class="text-center mt-3" style="font-weight: bolder;"><i class="fas fa-warning me-3"></i>Danger Zone</p>
         <form action="{{ route("laporan.archive", $laporan->id) }}" method="POST">
@@ -238,6 +239,7 @@
           </div>
       </form>
       </div>
+      @endif
   </div>
 </div>
 @endif

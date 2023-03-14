@@ -8,9 +8,9 @@
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset("img/password.png") }}" alt="" style="width: 200px;">
             </div>
-            <form action="" method="POST">
-                @csrf
+            <form>
                 <div class="mb-5 mt-3">
+                    <label for="" id="alert" class="form-label text-sm text-danger"></label>
                     <label for="" class="form-label text-sm">Masukkan password-mu yang sekarang <span class="text-danger">*</span> </label>
                     <input type="password" class="form-control" id="password">
                 </div>
@@ -70,7 +70,7 @@
               if(data.response === true) {
                 $("#box").html(data.returns);
               }else {
-                console.log(data);
+                $("#alert").html(data.message);
               }
           }
       });
