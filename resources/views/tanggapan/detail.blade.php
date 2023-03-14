@@ -24,6 +24,13 @@
         </tr>
 
         <tr>
+            <th>Menanggapi laporan</th>
+            <td>
+                <a href="{{ route("laporan.detail", $tanggapan->id_laporan) }}">{{ $tanggapan->laporan->judul }}</a> oleh
+                {{ $tanggapan->laporan->user->nama }}
+            </td>
+        </tr>
+        <tr>
             <th>
                 Tanggapan
             </th>

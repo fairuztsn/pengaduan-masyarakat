@@ -47,7 +47,6 @@ Route::middleware('auth')->group(function () {
         Route::prefix("tanggapan")->group(function() {
             Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
-            Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
             Route::post("/{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
             Route::post("/{id}/archive", [TanggapanController::class, "archive"])->name("tanggapan.archive");
         });
@@ -69,6 +68,10 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    Route::prefix("tanggapan")->group(function() {  
+        Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
+    });
+
     Route::middleware("onlyone")->group(function() {
         Route::prefix("user")->group(function() {
             Route::get("/", [UserController::class, "index"])->name("user.index");
@@ -83,12 +86,8 @@ Route::middleware('auth')->group(function () {
         Route::get("/profile", [SettingsController::class, "profile"])->name("settings.profile");
         Route::get("/profile/change-password", [SettingsController::class, "changePassword"])->name("settings.profile.change-password");
 
-        Route::post("/profile/update", [SettingsController::class, "updateProfile"])
-            ->name("settings.profile.update");
-        Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])
-            ->name("settings.profile.validate-old-password");
-        Route::post("/update-password", [SettingsController::class, "updatePassword"])
-            ->name("settings.profile.update-password");
+        Route::post("/profile/update", [SettingsController::class, "updateProfile"])->name("settings.profile.update");
+        Route::post("/validate-old-password", [SettingsController::class, "validateOldPassword"])->name("settings.profile.validate-old-password");
     });
 });
 
