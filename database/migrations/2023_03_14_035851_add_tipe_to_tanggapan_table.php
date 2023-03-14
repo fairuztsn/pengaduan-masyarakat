@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('tanggapan', function (Blueprint $table) {
             //
-            $table->string("judul", $length=100)->after("id");
+            $table->enum("tipe", ["DEFAULT", "NOTIF"])->default("DEFAULT")->after("id_user");
         });
     }
 

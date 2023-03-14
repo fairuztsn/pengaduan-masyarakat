@@ -98,8 +98,7 @@ class SettingsController extends Controller
             if(Hash::check($request->password, $user->password)) {
                 return response()->json([
                     "response" => "same_as_old",
-                    "message" => "Password-mu tidak boleh sama dengan yang lama",
-                    "icon" => "face-sad-tear"
+                    "message" => "Password-mu tidak boleh sama dengan yang lama"
                 ]);
             }else {
                 $user->password = Hash::make($request->password);
@@ -114,8 +113,7 @@ class SettingsController extends Controller
         }else {
             return response()->json([
                 "response" => "not_same",
-                "message" => "Password yang diketik ulang tidak cocok dengan password baru yang kamu ketikkan",
-                "icon" => "face-sad-tear"
+                "message" => "Password yang diketik ulang tidak cocok dengan password baru yang kamu ketikkan"
             ]);
         }
     }
