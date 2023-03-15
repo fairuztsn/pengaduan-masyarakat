@@ -29,13 +29,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get("/", [LaporanController::class, "dashboard"])->name("dashboard");
+    Route::get("/", [Controller::class, "dashboard"])->name("dashboard");
 
     Route::prefix("laporan")->group(function() {
         Route::get("/", [LaporanController::class, "index"])->name("laporan.index");
-        Route::post("/set", [LaporanController::class, "set"])->name("laporan.set")->middleware([OnlyAdmin::class]);
+        
+        Route::post("/set", [LaporanController::class, "set"])->name("laporan.set")
+            ->middleware([OnlyAdmin::class]);
+        
+        Route::get("/data", [LaporanController::class, "reportData"])->name("laporan.data")
+            ->middleware([OnlyAdmin::class]);
+        
         Route::post("/store", [LaporanController::class, "store"])->name("laporan.store")->middleware([OnlyUser::class]);
-        Route::post("/{id}/archive", [LaporanController::class, "archive"])->name("laporan.archive")->middleware([OnlyAdmin::class]);
         Route::get("/history", [LaporanController::class, "history"])->name("laporan.history");
 
         Route::get("/{id}", [LaporanController::class, "detail"])->name("laporan.detail");
@@ -48,6 +53,10 @@ Route::middleware('auth')->group(function () {
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::post("/{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
             Route::post("/{id}/archive", [TanggapanController::class, "archive"])->name("tanggapan.archive");
+        });
+
+        Route::prefix("laporan")->group(function() {
+            Route::post("/{id}/archive", [LaporanController::class, "archive"])->name("laporan.archive");
         });
 
         Route::prefix("archive")->group( function() {

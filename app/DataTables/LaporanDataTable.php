@@ -86,7 +86,7 @@ class LaporanDataTable extends DataTable
                     ->setTableId('laporan-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
+                    ->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([

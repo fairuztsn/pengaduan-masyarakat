@@ -24,15 +24,6 @@ class LaporanController extends Controller
         unlink(storage_path('app/public/foto_laporan/'.$path));
     }
 
-    public function dashboard() {
-        $user_role_id = Auth::user()->role_id;
-        return $user_role_id == 1 ? 
-        view("laporan.create") 
-        : view("dashboard", [
-            "report" => Laporan::whereNull("deleted_at")->orderBy("created_at", "desc")->get()
-        ]);
-    }
-
     public function index(LaporanDataTable $dataTable, UserLaporanDataTable $userDataTable) {
         $user = Auth::user();
 
@@ -213,6 +204,20 @@ class LaporanController extends Controller
         return redirect()->route("archived.laporan")->with("message", [
             "message" => "Berhasil melakukan unarchive laporan",
             "type" => "success"
+        ]);
+    }
+
+    public function reportData() {
+        $data = array();
+        for($i = 6; $i >= 0; $i --) {
+            array_push($data, array(
+                Carbon::now()->subMonth($i)->format("M Y") 
+                => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".Carbon::now()->subMonth($i)->toDateString()."%")->count()
+            ));
+        }
+
+        return response()->json([
+            "data" => $data
         ]);
     }
 

@@ -1,35 +1,125 @@
 @extends("layouts.app")
+
 @section("title", "Dashboard")
+@section("custom-css")
+<style>
+  .shadow-15 {
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  }
+  .shadow-13 {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  }
+  .shadow-46 {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  }
+  .shadow-0 {
+    
+  }
+  .rounded-v {
+    border-radius: 20px;
+  }
+
+  .hover-1 {
+    transition: 0.15s;
+  }
+  .hover-1:hover {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    cursor: pointer;
+  }
+  .hover-1:active {
+    transform: scale(0.98);
+  }
+</style>
+@endsection
+
 @section("content")
-<div class="bg-white rounded p-5 text-center">
-  <h4>Jumlah laporan per bulan</h4>
-  <div class="">
+<div class="row">
+  <div class="col-6">
+    <div class="row">
+      <div class="col-11 bg-white text-center p-4 m-3 rounded-v d-flex justify-content-center align-items-center hover-1" 
+      onclick="window.location.href = '{{ route('laporan.index') }}'">
+        <div class="">
+          <label for="" class="text-md mb-1">Laporan hari ini</label><br>
+          <span class="text-success"><i class="fas fa-book me-3"></i>{{ $todays_report }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5 bg-white text-center p-4 ms-4 rounded-v d-flex justify-content-center align-items-center hover-1" 
+      onclick="window.location.href = '{{ route('laporan.index') }}'">
+        <div class="">
+          <label for="" class="text-md mb-1">Petugas</label><br>
+          <span class="text-danger"><i class="fas fa-user me-3"></i>{{ $petugas_count }}</span>
+        </div>
+      </div>
+      <div class="col-5 bg-white text-center p-4 ms-4 rounded-v d-flex justify-content-center align-items-center hover-1" 
+      @if(Auth::user()->role_id == 3) onclick="window.location.href = '{{ route('user.index') }}'" @endif>
+        <div>
+          <label for="" class="text-md mb-1">Masyarakat</label><br>
+        <span class="text-primary"><i class="fas fa-user me-3"></i>{{ $user_count }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-5 bg-white text-left p-4 m-3 rounded-v d-flex justify-content-center align-items-center hover-1">
+    
+      <img src="{{ asset("img/shapes.png") }}" alt="" style="width: 150px;">
+      <label for="" class="text-md mb-1"><span class="text-sm">Selamat datang</span>, <br> {{Auth::user()->nama}}</label>
+    
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-11 bg-white p-4 m-3 rounded-v  hover-1">
+    <div>
+      <span class="ms-2 me-2 opacity-50">Hari ini </span> {{ $today }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-11 bg-white p-5 m-3 rounded-v  hover-1">
     <div id="chart"></div>
   </div>
 </div>
+@endsection
+
+@section("js-scripts")
+<script>
+  function redirect(route) {
+    location.href = route
+  }
+</script>
 <script src="{{ asset("cdn/apexchart.js") }}"></script>
 <script>
-  const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-  var data = [];
-  
-  // Get data each month
-  months.forEach(month => {
-    data.push({
-      x: months.indexOf(month)+1,
-      y: 100
+  $.getJSON("{{ route('laporan.data') }}", function(result) {
+    let data = [];
+    result.data.forEach(element => {
+      let x = Object.keys(element)[0];
+      let y = element[Object.keys(element)[0]];
+
+      data.push({
+        x: x,
+        y: y
+      });
     });
-  });
-  var options = {
+    
+    var options = {
+      title: {
+        text: "Laporan 6 bulan terakhir"
+      },
       chart: {
         type: 'bar'
       }
       ,series: [{
         data: data
       }]
-  }
+    }
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-chart.render();
+    chart.render();
+  });
 </script>
 @endsection
