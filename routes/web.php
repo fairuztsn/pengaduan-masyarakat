@@ -20,16 +20,15 @@ use App\Models\Tanggapan;
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get("/", [Controller::class, "dashboard"])->name("dashboard");
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get("/", [Controller::class, "dashboard"])->name("dashboard");
 
     Route::prefix("laporan")->group(function() {
         Route::get("/", [LaporanController::class, "index"])->name("laporan.index");

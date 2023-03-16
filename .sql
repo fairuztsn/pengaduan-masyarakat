@@ -1,1 +1,0 @@
-CREATE TRIGGER `delete_tanggapan` BEFORE DELETE ON `tanggapan` FOR EACH ROW DELETE FROM tanggapan WHERE tanggapan.id_laporan=OLD.id 

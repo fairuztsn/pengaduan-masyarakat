@@ -1,10 +1,10 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="">
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
@@ -39,35 +39,44 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+@endsection --}}
+
+@extends("layouts.app")
+@section("title", "Laporin - Masuk")
+@section("content")
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-4 bg-white p-5 rounded">
+        <div class="d-flex justify-content-center align-items-center">
+            <img src="{{ asset("img/login.jpg") }}" alt="" style="width: 150px;">
+        </div>
+        <form action="{{ route("login") }}" class="mt-4" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="" class="form-label text-sm"><i class="fas fa-envelope me-3"></i>Email <span class="text-sm text-danger">*</span> </label>
+                <input type="email" name="email" id="email" class="form-control bg-white">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label text-sm"><i class="fas fa-key me-3"></i>Password <span class="text-sm text-danger">*</span> </label>
+                <input type="password" name="password" id="password" class="form-control bg-white">
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-outline-dark form-control mb-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"><i class="fas fa-right-to-bracket me-3"></i>Masuk</button>
+                <span class="text-sm opacity">Belum punya akun? <a href="{{ route("register") }}">Daftar</a></span>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

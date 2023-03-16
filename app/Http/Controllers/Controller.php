@@ -23,17 +23,21 @@ class Controller extends BaseController
     }
 
     public function dashboard() {
-        if(Auth::user()->role_id == 1) {
-            return view("laporan.create");
+        if(Auth::check()) {
+            if(Auth::user()->role_id == 1) {
+                return view("laporan.create");
+            }else {
+                return view("dashboard", [
+                        "report" => Laporan::whereNull("deleted_at")->orderBy("created_at", "desc")->get(),
+                        "todays_report" => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".Carbon::now()->toDateString()."%")->count(),
+                        "user_count" => User::where("role_id", 1)->count(),
+                        "petugas_count" => User::where("role_id", 2)->count(),
+                        "today" => Carbon::now()->format("d M Y"),
+                        "res" => Carbon::now(),
+                ]);
+            }
         }else {
-            return view("dashboard", [
-                    "report" => Laporan::whereNull("deleted_at")->orderBy("created_at", "desc")->get(),
-                    "todays_report" => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".Carbon::now()->toDateString()."%")->count(),
-                    "user_count" => User::where("role_id", 1)->count(),
-                    "petugas_count" => User::where("role_id", 2)->count(),
-                    "today" => Carbon::now()->format("d M Y"),
-                    "res" => Carbon::now(),
-            ]);
+            return view("welcome");
         }
     }
 }

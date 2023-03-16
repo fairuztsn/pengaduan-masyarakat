@@ -210,6 +210,7 @@ class LaporanController extends Controller
     private function monthSqlFormat($subMonth = 0) {
         return Carbon::now()->subMonth($subMonth)->format("Y-m");
     }
+    
     public function reportData() {
         $data = array();
         for($i = 6; $i >= 0; $i --) {
