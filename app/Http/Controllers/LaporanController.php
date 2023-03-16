@@ -207,12 +207,15 @@ class LaporanController extends Controller
         ]);
     }
 
+    private function monthSqlFormat($subMonth = 0) {
+        return Carbon::now()->subMonth($subMonth)->format("Y-m");
+    }
     public function reportData() {
         $data = array();
         for($i = 6; $i >= 0; $i --) {
             array_push($data, array(
                 Carbon::now()->subMonth($i)->format("M Y") 
-                => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".Carbon::now()->subMonth($i)->toDateString()."%")->count()
+                => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".$this->monthSqlFormat($i)."%")->count()
             ));
         }
 

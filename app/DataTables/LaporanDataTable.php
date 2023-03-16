@@ -14,8 +14,6 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-
-
 class LaporanDataTable extends DataTable
 {
     /**
@@ -86,7 +84,7 @@ class LaporanDataTable extends DataTable
                     ->setTableId('laporan-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Bfrtip')
+                    //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
