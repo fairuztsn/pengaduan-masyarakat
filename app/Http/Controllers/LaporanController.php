@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 use App\DataTables\LaporanDataTable;
 use App\DataTables\UserLaporanDataTable;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -169,7 +170,9 @@ class LaporanController extends Controller
         if (Storage::exists("/public/foto_laporan/".$report->foto)) {
             $this->removeImg($report->foto);
         }
+
         $report->delete();
+        
         return redirect()->route("archived.laporan")->with("message", [
             "type" => "danger",
             "message" => "Laporan berhasil dihapus"
@@ -207,17 +210,20 @@ class LaporanController extends Controller
         ]);
     }
 
-    private function monthSqlFormat($subMonth = 0) {
-        return Carbon::now()->subMonth($subMonth)->format("Y-m");
+    private function jumlahLaporanDi($month, $year) {
+        $query = (array) DB::select("SELECT jumlahLaporanDi($month, $year)")[0];
+        return $query["jumlahLaporanDi($month, $year)"];
     }
     
     public function reportData() {
-        $data = array();
+        $data = [];
         for($i = 6; $i >= 0; $i --) {
-            array_push($data, array(
-                Carbon::now()->subMonth($i)->format("M Y") 
-                => Laporan::whereNull("deleted_at")->where("created_at", "LIKE", "%".$this->monthSqlFormat($i)."%")->count()
-            ));
+            $month = (int) Carbon::now()->subMonth($i)->format("m");
+            $year = (int) Carbon::now()->subMonth($i)->format("Y");
+
+            array_push($data, [
+                Carbon::now()->subMonth($i)->format("M Y") => $this->jumlahLaporanDi($month, $year)
+            ]);
         }
 
         return response()->json([

@@ -16,3 +16,5 @@
 # allow_url_fopen = on
 
 # composer update
+
+# Add procedure and trigger to migration and apply on controller

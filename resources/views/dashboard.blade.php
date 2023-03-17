@@ -46,7 +46,7 @@
     </div>
     <div class="row">
       <div class="col-5 bg-white text-center p-4 ms-4 rounded-v d-flex justify-content-center align-items-center hover-1" 
-      onclick="window.location.href = '{{ route('laporan.index') }}'">
+      onclick="window.location.href = '{{ route('user.index') }}'">
         <div class="">
           <label for="" class="text-md mb-1">Petugas</label><br>
           <span class="text-danger"><i class="fas fa-user me-3"></i>{{ $petugas_count }}</span>
