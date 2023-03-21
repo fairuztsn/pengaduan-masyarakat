@@ -1,5 +1,7 @@
 @extends("layouts.app")
 @section("title", "Buat Laporan")
+@section("custom-css")
+@endsection
 @section("content")
 @if ($errors->any())
     <div class="alert alert-danger">

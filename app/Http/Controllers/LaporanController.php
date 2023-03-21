@@ -17,6 +17,8 @@ use App\DataTables\LaporanDataTable;
 use App\DataTables\UserLaporanDataTable;
 use Illuminate\Support\Facades\DB;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class LaporanController extends Controller
 {
     //
@@ -229,6 +231,19 @@ class LaporanController extends Controller
         return response()->json([
             "data" => $data
         ]);
+    }
+
+    public function pdf($id)
+    {
+        $items = Laporan::find($id);
+        return Pdf::loadView("pdfview")->stream();
+        // view()->share('items',$items);
+        // return response()->json($items);
+        // if($request->has('download')){
+        //     $pdf = PDF::loadView('pdfview');
+        //     return $pdf->download('pdfview.pdf');
+        // }
+        // return view('pdfview');
     }
 
 }

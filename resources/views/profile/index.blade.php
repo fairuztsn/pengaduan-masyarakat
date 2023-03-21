@@ -1,7 +1,17 @@
 @extends("layouts.app")
 @section("title", "@".$user->username)
+@section("custom-css")
+<style>
+  section.myyy {
+    transform: scale(0.6);
+    position: relative;
+    bottom: 280px;
+    right: 300px;
+  }
+</style>
+@endsection
 @section("content")
-<section class="h-100 gradient-custom-2">
+<section class="h-100 gradient-custom-2 myyy">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-lg-9 col-xl-7">

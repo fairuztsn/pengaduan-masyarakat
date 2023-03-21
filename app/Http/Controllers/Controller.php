@@ -10,9 +10,12 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Laporan;
 use App\Models\User;
+
+use PDF;
 
 class Controller extends BaseController
 {
