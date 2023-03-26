@@ -96,7 +96,10 @@
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
     <div class="rounded bg-white p-3" style="">
-      <a href="{{route('laporan.pdf', $laporan->id)}}" class="btn btn-dark ms-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><i class="fas fa-file-pdf me-2"></i> export this dude to .pdf</a>
+      <a href="{{route('laporan.pdf', [
+        "download" => "pdf",
+        "id" => $laporan->id
+      ])}}" class="btn btn-dark ms-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><i class="fas fa-file-pdf me-2"></i> export this dude to .pdf</a>
         <div class="p-3">
           <div class="row">
             <div class="col-12">
@@ -116,7 +119,7 @@
           <div class="mt-3">
             {!! $laporan->isi !!}
           </div>
-          <div class="report-image">
+          <div class="report-image mt-2">
             <img src="/storage/foto_laporan/{{$laporan->foto}}" alt="Gambar tidak ditemukan" style="width: 300px;" class="rounded mt-3">
           </div>
 

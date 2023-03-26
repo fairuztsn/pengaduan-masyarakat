@@ -1,9 +1,0 @@
-Todo:
-    1: Clear textarea after tanggapan success
-
-IncaseError:
-    1: extension=gd
-    2: https://laracasts.com/discuss/channels/laravel/the-system-cannot-find-the-path-specified-stdout-command-usrlocalbinwkhtmltopdf
-    3: uncomment extension = php_openssl.dll to enable this line
-    4: allow_url_fopen = on
-    5: composer update

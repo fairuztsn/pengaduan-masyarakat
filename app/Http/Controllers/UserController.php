@@ -8,6 +8,7 @@ use App\Models\User;
 use App\DataTables\UsersDataTable;
 use App\Models\Laporan;
 use App\Models\Tanggapan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -18,20 +19,27 @@ class UserController extends Controller
     }
 
     public function profile($id) {
-        $user = User::where("id", $id)->first();
-
-        return $user != null ? view("profile.index", [
-            "user" => $user,
-            "recent" => $user->role_id == 1 ? 
+        $user = DB::select("CALL UserWhereId(?)", [$id]);
+        
+        if(empty($user)) {
+            return abort(404);
+        }else {
+            $user = User::where("id", ((array) $user[0])["id"])->first();
+            $recent = $user->role_id == 1 ?
                 Laporan::where("id_user", $id)
-                    ->whereNull("deleted_at")
-                    ->orderBy("created_at", "desc")
-                    ->take(2)->get() 
+                        ->whereNull("deleted_at")
+                        ->orderBy("created_at", "desc")
+                        ->take(2)->get() 
                 : Tanggapan::where("id_user", $id)
-                    ->whereHas("laporan", function($query) {
-                        $query->whereNull('deleted_at');
-                    })->orderBy("created_at", "desc")->take(2)->get()
-        ]) : abort(404);
+                        ->whereHas("laporan", function($query) {
+                            $query->whereNull('deleted_at');
+                        })->orderBy("created_at", "desc")->take(2)->get();
+            
+            return view("profile.index", [
+                "user" => $user,
+                "recent" => $recent,
+            ]);
+        }
     }
 
     public function create() {

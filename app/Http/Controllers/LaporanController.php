@@ -16,8 +16,8 @@ use Illuminate\Support\Carbon;
 use App\DataTables\LaporanDataTable;
 use App\DataTables\UserLaporanDataTable;
 use Illuminate\Support\Facades\DB;
-
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
+use PDF;
 
 class LaporanController extends Controller
 {
@@ -233,17 +233,18 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function pdf($id)
+    public function pdf(Request $request)
     {
-        $items = Laporan::find($id);
-        return Pdf::loadView("pdfview")->stream();
-        // view()->share('items',$items);
-        // return response()->json($items);
-        // if($request->has('download')){
-        //     $pdf = PDF::loadView('pdfview');
-        //     return $pdf->download('pdfview.pdf');
-        // }
-        // return view('pdfview');
+        $laporan = Laporan::find($request->id);
+
+        if($request->has("download")) {
+            view()->share("laporan", $laporan);
+            $pdf = PDF::loadView("laporan.pdf");
+            return $pdf->download("laporan-pengaduan-idl-".$laporan->id."-idu-".$laporan->id_user);
+        }else {
+            $image = asset("/storage/foto_laporan/".$laporan->foto);
+            return view("laporan.pdf", ["laporan" => $laporan]);
+        }
     }
 
 }

@@ -33,8 +33,9 @@
 	@yield("custom-css")
 </head>
 <body>
+	@yield("no_navbar")
 	<div class="wrapper">
-		@if(Auth::check())
+		@if(Auth::check() && !isset($no_navbar))
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" style="text-decoration:none;" href="{{ route("dashboard") }}">
@@ -105,7 +106,7 @@
 		@endif
 
 		<div class="main">
-			@if(Auth::check())
+			@if(Auth::check() && !isset($no_navbar))
 			<nav class="navbar navbar-expand navbar-light navbar-bg">
 				<a class="ms-2 sidebar-toggle js-sidebar-toggle">
                     <i class="hamburger align-self-center"></i>
