@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Laporan;
 use App\Models\User;
 
+
 use PDF;
 
 class Controller extends BaseController
@@ -22,7 +23,8 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function test() {
-        return \App\Models\User::find(3)->role;
+        $user = User::find(49);
+        return Carbon::parse($user->created_at)->toDateString();
     }
 
     public function dashboard() {

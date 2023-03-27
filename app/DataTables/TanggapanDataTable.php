@@ -13,6 +13,8 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
+use Illuminate\Http\Request;
+
 class TanggapanDataTable extends DataTable
 {
     /**
@@ -80,13 +82,23 @@ class TanggapanDataTable extends DataTable
      * @param \App\Models\Tanggapan $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Tanggapan $model): QueryBuilder
+    public function query(Tanggapan $model, Request $request): QueryBuilder
     {
+        if($request->has("uid")) {
+            $model = Auth::user()->role_id != 1 ? $model->whereHas("laporan", function($query) {
+                $query->whereNull("deleted_at");
+            })->whereNull("deleted_at")->where("id_user", $request->uid)
+            : $model->whereHas("laporan", function($query) {
+                $query->where("id_user", Auth::id())->whereNull("deleted_at");
+            })->whereNull("deleted_at")->where("id_user", $request->uid);
+        }
+
         return Auth::user()->role_id != 1 ? $model->whereHas("laporan", function($query) {
-            $query->whereNull("deleted_at");
-        })->whereNull("deleted_at") : $model->whereHas("laporan", function($query) {
-            $query->where("id_user", Auth::id())->whereNull("deleted_at");
-        })->whereNull("deleted_at");
+                $query->whereNull("deleted_at");
+            })->whereNull("deleted_at") 
+            : $model->whereHas("laporan", function($query) {
+                $query->where("id_user", Auth::id())->whereNull("deleted_at");
+            })->whereNull("deleted_at");
     }
 
     /**
@@ -106,7 +118,7 @@ class TanggapanDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')

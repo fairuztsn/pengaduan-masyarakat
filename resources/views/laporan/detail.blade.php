@@ -99,7 +99,7 @@
       <a href="{{route('laporan.pdf', [
         "download" => "pdf",
         "id" => $laporan->id
-      ])}}" class="btn btn-dark ms-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><i class="fas fa-file-pdf me-2"></i> export this dude to .pdf</a>
+      ])}}" class="btn btn-dark ms-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><i class="fas fa-file-pdf me-2"></i>Unduh PDF</a>
         <div class="p-3">
           <div class="row">
             <div class="col-12">
@@ -109,8 +109,10 @@
               
               <h3>{{ $laporan->judul }}</h3>
               <div class="d-flex" style="font-weight: 800;">
-                <span class="me-2"> {{ \App\Models\User::where("id", $laporan->id_user)->first()->nama }} </span>
-                <span class="opacity-75">  {{"@".\App\Models\User::where("id", $laporan->id_user)->first()->username}}</span>
+                <span class="me-2"> {{ $laporan->user->nama }} </span>
+                <span class="opacity-75">
+                  <a href="{{ (Auth::user()->role_id == 1) || (Auth::user()->role_id == 2) ? "#" : route("user.profile", $laporan->id_user) }}" @if(Auth::user()->role_id == 3) target="_blank" @endif  class="link-primary">{{"@".$laporan->user->username}}</a>
+                </span>
               <div class="created-at">
                 <span class="opacity-50 ms-3" style="">{{ $laporan->created_at }}</span>
               </div>
@@ -155,7 +157,8 @@
                             success: function (data) {
                                 //
                                 if(data.message === "Done") {
-                                    location.reload();
+                                  $("textarea#tanggapan").val("");
+                                  location.reload();
                                 }
                             }
                         });
@@ -276,6 +279,7 @@
                   location.reload();
               }else {
                 alert(data.response);
+                console.log(data);
               }
           }
       });

@@ -15,10 +15,14 @@
                 <img src="{{ url("img/profile.jpg") }}"
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                   style="width: 150px; z-index: 1">
-                <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                  @php
+                      $redirect = $user->role_id == 1 ? "laporan" : "tanggapan";
+                      $redirect = "$redirect.index";
+                  @endphp
+                <a class="btn btn-outline-dark" href="{{ route($redirect)."?uid=$user->id" }}"
                   style="z-index: 1;">
-                  Lihat laporan
-                </button>
+                  Lihat {{ $user->role_id == 1 ? "Laporan" : "Tanggapan" }}
+              </a>
               </div>
               <div class="ms-3" style="margin-top: 130px;">
                 <h5 style="color: white;">{{ $user->nama }}</h5>
@@ -38,7 +42,7 @@
                     <p class="small text-muted mb-0">Total Laporan</p>
                 </div>
                 @endif
-                </div>
+                </div>                                                        
               </div>
             </div>
             <div class="card-body p-4 text-black">
@@ -46,8 +50,11 @@
                 <p class="lead fw-normal mb-1">About</p>
                 <div class="p-4 bg-white rounded">
                   <p class="font-italic mb-1"><i class="fas fa-id-card me-3"></i>{{ $user->nik }}</p>
-                  <p class="font-italic mb-1"><i class="fas fa-at me-3"></i><u>{{ $user->email }}</u></p>
-                  <p class="font-italic mb-0"><i class="fas fa-{{ $user->role_id == 1 ? "users" : "user-secret" }} me-3"></i>Pengguna / {{ $user->role_id == 1 ? "Masyarakat" : "Petugas" }}</p>
+                  <p class="font-italic mb-1 link-primary"><i class="fas fa-at me-3"></i><u>{{ $user->email }}</u></p>
+                  <p class="font-italic mb-0">
+                    <i class="fas fa-{{ $user->role_id == 1 ? "users" : "user-secret" }} me-3"></i>
+                    Pengguna / {{ $user->role_id == 1 ? "Masyarakat" : "Petugas" }} @if($user->role_id == 3) / Admin @endif
+                  </p>
                 </div>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-4">

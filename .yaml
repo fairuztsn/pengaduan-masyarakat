@@ -1,6 +1,6 @@
 Todo:
     1: Clear textarea after tanggapan success
-    2: Delete jumlah_tanggapan on laporan
+    2: Remove PDF icon in datatables
 
 IncaseError:
     1: extension=gd
@@ -32,3 +32,13 @@ PlusTime:
         $date = "2016-11-24 11:59:56";
         $carbon_date = Carbon::parse($date);
         $carbon_date->addHours(1);
+
+
+GIT:
+    1: git reset --hard HEAD
+    2: git pull
+
+IllegalMixErr:
+    1: SET collation_connection = 'utf8mb4_general_ci'; 
+    2: ALTER DATABASE pengaduan_masyarakat CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 
+    3: ALTER TABLE laporan CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 

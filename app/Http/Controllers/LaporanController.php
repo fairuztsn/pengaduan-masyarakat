@@ -27,17 +27,10 @@ class LaporanController extends Controller
         unlink(storage_path('app/public/foto_laporan/'.$path));
     }
 
-    public function index(LaporanDataTable $dataTable, UserLaporanDataTable $userDataTable) {
+    public function index(LaporanDataTable $dataTable, UserLaporanDataTable $userDataTable, Request $request) {
         $user = Auth::user();
 
         if($user->role_id == 1) {
-            
-        //     $val =  Laporan::where("id_user", Auth::id())->whereNull("deleted_at")->orderBy("created_at", "desc")->get();
-
-        //     return view("laporan.index", [
-        //         "report" => $val
-        //     ]);
-        // }
             return $userDataTable->render("laporan.index");
         }
         else {
@@ -142,7 +135,7 @@ class LaporanController extends Controller
         ];
 
         if(in_array($request->status, [1,2,3])) {
-            $report = Laporan::find($request->id)->first();
+            $report = Laporan::find($request->id);
 
             if($report->status == $status[$request->status]) {
                 return response()->json(["response" => "Tidak ada perubahan"]);
@@ -216,15 +209,27 @@ class LaporanController extends Controller
         $query = (array) DB::select("SELECT jumlahLaporanDi($month, $year)")[0];
         return $query["jumlahLaporanDi($month, $year)"];
     }
+
+    private function jumlahLaporanDiWithStatus($month, $year, $status) {
+        $query = (array) DB::select("SELECT jumlahLaporanDiWithStatus($month, $year, $status)")[0];
+        return $query["jumlahLaporanDiWithStatus($month, $year, $status)"];
+    }
     
     public function reportData() {
         $data = [];
-        for($i = 6; $i >= 0; $i --) {
+        
+        for($i = 0; $i < 6; $i ++) {
             $month = (int) Carbon::now()->subMonth($i)->format("m");
             $year = (int) Carbon::now()->subMonth($i)->format("Y");
 
             array_push($data, [
-                Carbon::now()->subMonth($i)->format("M Y") => $this->jumlahLaporanDi($month, $year)
+                Carbon::now()->subMonth($i)->format("M Y") => [
+                    "Total" => $this->jumlahLaporanDi($month, $year),
+                    "Belum diproses" => $this->jumlahLaporanDiWithStatus($month, $year, "'0'"),
+                    "Sedang diproses" => $this->jumlahLaporanDiWithStatus($month, $year, "'process'"),
+                    "Ditolak" => $this->jumlahLaporanDiWithStatus($month, $year, "'tolak'"),
+                    "Selesai" => $this->jumlahLaporanDiWithStatus($month, $year, "'selesai'")
+                ]
             ]);
         }
 

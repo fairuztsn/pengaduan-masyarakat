@@ -12,6 +12,8 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
+use Illuminate\Http\Request;
+
 class LaporanArchivedDataTable extends DataTable
 {
     /**
@@ -58,9 +60,12 @@ class LaporanArchivedDataTable extends DataTable
      * @param \App\Models\LaporanArchived $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Laporan $model): QueryBuilder
+    public function query(Laporan $model, Request $request): QueryBuilder
     {
-        return $model->whereNotNull("deleted_at")->newQuery();
+        if($request->has("uid")) {
+            $model = $model->where("id_user", $request->uid);
+        }
+        return $model->whereNotNull("deleted_at");
     }
 
     /**
@@ -80,7 +85,7 @@ class LaporanArchivedDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')

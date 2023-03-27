@@ -52,6 +52,7 @@ class UserLaporanDataTable extends DataTable
      */
     public function query(Laporan $model): QueryBuilder
     {
+        // No need uid
         return $model->whereNull("deleted_at")->where("id_user", Auth::id());
     }
 
@@ -72,7 +73,7 @@ class UserLaporanDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')

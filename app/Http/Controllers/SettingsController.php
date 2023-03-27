@@ -101,6 +101,12 @@ class SettingsController extends Controller
                     "message" => "Password-mu tidak boleh sama dengan yang lama"
                 ]);
             }else {
+                if(strlen($request->password) < 8) {
+                    return response()->json([
+                        "response" => "too_short",
+                        "message" => "*Password harus paling sedikit memiliki 8 karakter",
+                    ]);
+                }
                 $user->password = Hash::make($request->password);
                 $user->update();
 

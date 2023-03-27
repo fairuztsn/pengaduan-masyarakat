@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Http\Request;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -48,8 +49,16 @@ class UsersDataTable extends DataTable
      * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model): QueryBuilder
+    public function query(User $model, Request $request): QueryBuilder
     {
+        if($request->has("uid")) {
+            $model = $model->where("id", $request->uid);
+        }
+
+        if($request->has("rid")) {
+            $model = $model->where("role_id", $request->rid);
+        }
+
         return $model->newQuery();
     }
 
@@ -70,7 +79,7 @@ class UsersDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')

@@ -13,6 +13,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Http\Request;
 
 class LaporanDataTable extends DataTable
 {
@@ -68,8 +69,11 @@ class LaporanDataTable extends DataTable
      * @param \App\Models\Laporan $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Laporan $model): QueryBuilder
+    public function query(Laporan $model, Request $request): QueryBuilder
     {
+        if($request->has("uid")) {
+            $model =  $model->where("id_user", $request->uid);
+        }
         return $model->whereNull("deleted_at");
     }
 
@@ -90,7 +94,7 @@ class LaporanDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')

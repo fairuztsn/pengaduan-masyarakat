@@ -12,7 +12,6 @@
 			src: url("/fonts/poppins/Poppins-Regular.ttf");
 			font-weight: normal;
 			font-style: normal;
-
 		}
 
         * {
@@ -26,7 +25,7 @@
             <div id="img">
                 <img src="{{ asset("img/credit-tradeline.jpg") }}" alt="" class="m-3 rounded" style="width: 200px;">
             </div>
-            <h1>Laporin <span class="text-sm opacity-75">keluhan-mu</span>.</h1>
+            <h1>Laporin <span class="text-sm opacity-75">keluhan/pengaduan-mu</span>.</h1>
             <div class="login-register d-flex justify-content-center align-items-center">
                 <div>
                     <div class="d-flex justify-content-center align-items-center">

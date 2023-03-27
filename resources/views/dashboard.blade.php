@@ -93,33 +93,100 @@
 </script>
 <script src="{{ asset("cdn/apexchart.js") }}"></script>
 <script>
+
   $.getJSON("{{ route('laporan.data') }}", function(result) {
     let data = [];
+    let keys = [];
+
     result.data.forEach(element => {
-      let x = Object.keys(element)[0];
-      let y = element[Object.keys(element)[0]];
-
-      data.push({
-        x: x,
-        y: y
-      });
+      let currentKey = Object.keys(element)[0];
+      keys.push(currentKey);
     });
-    
+
     var options = {
-      title: {
-        text: "Laporan 6 bulan terakhir"
-      },
-      chart: {
-        type: 'bar'
-      }
-      ,series: [{
-        data: data
-      }]
-    }
+          series: [{
+          name: 'Belum diproses',
+          data: result.data.map(each => {
+            return each[Object.keys(each)[0]]["Belum diproses"]
+          })
+        }, {
+          name: 'Sedang diproses',
+          data: result.data.map(each => {
+            return each[Object.keys(each)[0]]["Sedang diproses"]
+          })
+        }, {
+          name: 'Ditolak',
+          data: result.data.map(each => {
+            return each[Object.keys(each)[0]]["Ditolak"]
+          })
+        }, {
+          name: 'Selesai',
+          data: result.data.map(each => {
+            return each[Object.keys(each)[0]]["Selesai"]
+          })
+        }],
+          chart: {
+          type: 'bar',
+          height: 400,
+          stacked: true,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            dataLabels: {
+              total: {
+                enabled: true,
+                offsetX: 0,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
+              }
+            }
+          },
+        },
+        stroke: {
+          width: 1,
+          colors: ['#fff']
+        },
+        title: {
+          text: 'Grafik Laporan Pengaduan 6 Bulan Terakhir'
+        },
+        xaxis: {
+          categories: keys,
+          labels: {
+            formatter: function (val) {
+              return val + ""
+            }
+          },
+          title: {
+            text: "Jumlah"
+          }
+        },
+        yaxis: {
+          title: {
+            text: "Bulan"
+          },
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + ";"
+            }
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-    chart.render();
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
   });
 </script>
 @endsection

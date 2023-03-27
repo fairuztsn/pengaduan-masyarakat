@@ -12,6 +12,8 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
+use Illuminate\Http\Request;
+
 class TanggapanArchivedDataTable extends DataTable
 {
     /**
@@ -49,8 +51,11 @@ class TanggapanArchivedDataTable extends DataTable
      * @param \App\Models\TanggapanArchived $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Tanggapan $model): QueryBuilder
+    public function query(Tanggapan $model, Request $request): QueryBuilder
     {
+        if($request->has("uid")) {
+            $model = $model->where("id_user", $request->uid);
+        }
         return $model->whereNotNull("deleted_at");
     }
 
@@ -71,7 +76,7 @@ class TanggapanArchivedDataTable extends DataTable
                     ->buttons([
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf'),
+                        
                         Button::make('print'),
                         Button::make('reset'),
                         Button::make('reload')
