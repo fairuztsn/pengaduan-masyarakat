@@ -69,11 +69,11 @@ class TanggapanDataTable extends DataTable
                 // idk
                 $query->where("id_user", \App\Models\User::where("nama", "LIKE", "%".$keyword."%")->first()->id ?? 0);
             })->orderColumn("nama_user", false)
-            ->editColumn("judul_laporan", function($query) {
+            ->editColumn("menanggapi_laporan", function($query) {
                 return $query->laporan->judul;
-            })->filterColumn("judul_laporan", function($query, $keyword) {
+            })->filterColumn("menanggapi_laporan", function($query, $keyword) {
                 $query->where("id_laporan", \App\Models\Laporan::where("judul", "LIKE", "%".$keyword."%")->first()->id ?? 0);
-            })->orderColumn("judul_laporan", false)->setRowId('id');
+            })->orderColumn("menanggapi_laporan", false)->setRowId('id');
     }
 
     /**
@@ -151,7 +151,7 @@ class TanggapanDataTable extends DataTable
             ->width(60)
             ->addClass('text-center'),
             Column::make('id'),
-            Column::make("judul_laporan"),
+            Column::make("menanggapi_laporan"),
             Column::make("tanggapan"),
             Column::make("nama_user"),
             Column::make('created_at'),
