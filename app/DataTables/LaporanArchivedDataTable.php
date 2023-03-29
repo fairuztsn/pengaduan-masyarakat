@@ -65,6 +65,11 @@ class LaporanArchivedDataTable extends DataTable
         if($request->has("uid")) {
             $model = $model->where("id_user", $request->uid);
         }
+
+        if($request->has("status")) {
+            $model = $model->where("status", $request->status);
+        }
+
         return $model->whereNotNull("deleted_at");
     }
 
