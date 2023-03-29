@@ -190,6 +190,7 @@
             </div>
         @endif
         <div class="d-flex justify-content-center align-items-center">
+            <h4 class="title">Laporin - Daftar/Register</h4>
             <img src="{{ asset("img/carry-kittens.jpg") }}" alt="" style="width: 150px;">
         </div>
         <form action="{{ route("register.store") }}" class="mt-4" method="POST">

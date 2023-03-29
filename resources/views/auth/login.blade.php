@@ -60,6 +60,7 @@
 <div class="row d-flex justify-content-center align-items-center">
     <div class="col-4 bg-white p-5 rounded">
         <div class="d-flex justify-content-center align-items-center">
+            <h4 class="title">Laporin - Masuk/Login</h4>
             <img src="{{ asset("img/login.jpg") }}" alt="" style="width: 150px;">
         </div>
         <form action="{{ route("login") }}" class="mt-4" method="POST">
