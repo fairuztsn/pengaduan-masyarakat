@@ -17,7 +17,7 @@ use App\DataTables\LaporanDataTable;
 use App\DataTables\UserLaporanDataTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use PDF;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class LaporanController extends Controller
 {
@@ -217,13 +217,13 @@ class LaporanController extends Controller
     
     public function reportData() {
         $data = [];
-        
+
         for($i = 0; $i < 6; $i ++) {
-            $month = (int) Carbon::now()->subMonth($i)->format("m");
-            $year = (int) Carbon::now()->subMonth($i)->format("Y");
+            $month = (int) Carbon::now()->subMonthsNoOverflow($i)->format("m");
+            $year = (int) Carbon::now()->subMonthsNoOverflow($i)->format("Y");
 
             array_push($data, [
-                Carbon::now()->subMonth($i)->format("M Y") => [
+                Carbon::now()->subMonthsNoOverflow($i)->format("M Y") => [
                     "Total" => $this->jumlahLaporanDi($month, $year),
                     "Belum diproses" => $this->jumlahLaporanDiWithStatus($month, $year, "'0'"),
                     "Sedang diproses" => $this->jumlahLaporanDiWithStatus($month, $year, "'process'"),
@@ -245,6 +245,8 @@ class LaporanController extends Controller
         if($request->has("download")) {
             view()->share("laporan", $laporan);
             $pdf = PDF::loadView("laporan.pdf");
+            $pdf->setBasePath(public_path());
+            $pdf->setPaper("A4");
             return $pdf->download("laporan-pengaduan-idl-".$laporan->id."-idu-".$laporan->id_user);
         }else {
             $image = asset("/storage/foto_laporan/".$laporan->foto);

@@ -48,6 +48,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware("onlyadmin")->group( function() {
+        Route::prefix("user")->group(function() {
+            Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
+        });
+
         Route::prefix("tanggapan")->group(function() {
             Route::post("/store", [TanggapanController::class, "store"])->name("tanggapan.store");
             Route::post("/{id}/delete", [TanggapanController::class, "destroy"])->name("tanggapan.delete");
@@ -85,7 +89,6 @@ Route::middleware('auth')->group(function () {
             Route::get("/", [UserController::class, "index"])->name("user.index");
             Route::get("/create", [UserController::class, "create"])->name("user.create");
             Route::post("/store", [UserController::class, "store"])->name("user.store");
-            Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
         });
     });
 

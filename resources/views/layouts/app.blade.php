@@ -45,6 +45,9 @@
 
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
+						<i class="fas fa-user me-3"></i>{{ Auth::user()->username }}
+					</li>
+					<li class="sidebar-header">
 						Pages
 					</li>
 					<li class="sidebar-item {{Route::currentRouteName() == "dashboard" ? "active" : ""}}">

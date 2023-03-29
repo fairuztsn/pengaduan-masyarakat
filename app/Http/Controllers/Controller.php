@@ -23,8 +23,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function test() {
-        $user = User::find(49);
-        return Carbon::parse($user->created_at)->toDateString();
+        return view("layouts.app");
     }
 
     public function dashboard() {
@@ -39,6 +38,7 @@ class Controller extends BaseController
                         "petugas_count" => User::where("role_id", 2)->count(),
                         "today" => Carbon::now()->format("d M Y"),
                         "res" => Carbon::now(),
+                        "nowDateTime" => Carbon::now()->toDateTimeString()
                 ]);
             }
         }else {

@@ -59,7 +59,7 @@
               </div>
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <p class="lead fw-normal mb-0">{{ $user->role_id == 1 ? "Laporan" : "Tanggapan" }} terbaru</p>
-                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                <p class="mb-0"><a href="{{ route($redirect)."?uid=$user->id" }}" class="text-muted">Tampilkan semua</a></p>
               </div>
               <div class="row g-2">
                 <div class="row">
@@ -83,7 +83,7 @@
                   <p class="text-center">Tidak ada data</p>
                   @endforelse
 
-                  @elseif($user->role_id == 2)
+                  @elseif($user->role_id == 2 || $user->role_id == 3)
                   @forelse($recent as $tanggapan)
                   <div class="card mb-5" style="border-radius: 15px;">
                     <div class="card-body p-4">
@@ -92,7 +92,7 @@
                       {!! Str::limit($tanggapan->tanggapan, 100) !!}
                       <hr class="my-4">
                       <div class="d-flex justify-content-start align-items-center">
-                        <a href="{{ route("laporan.detail", $tanggapan->id_laporan) }}" class="btn btn-outline-dark btn-sm btn-floating form-control">
+                        <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" class="btn btn-outline-dark btn-sm btn-floating form-control">
                           <i class="fas fa-eye me-2"></i>Lihat
                         </a>
                       </div>

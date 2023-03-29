@@ -8,9 +8,9 @@
                 Username
             </th>
             <td>
-                <span class="link-primary">
+                <a class="link-primary" @if(Auth::user()->role_id==3) href="{{ route("user.profile", $tanggapan->id_user) }}" @endif>
                     {{ "@".$tanggapan->user->username }}
-                </span>
+                </a>
             </td>
         </tr>
 
@@ -31,10 +31,13 @@
             </td>
         </tr>
         <tr>
-            <th>
+            <th colspan="2" style="border-bottom: none;">
                 Tanggapan
             </th>
-            <td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
                 {{ $tanggapan->tanggapan }}
             </td>
         </tr>

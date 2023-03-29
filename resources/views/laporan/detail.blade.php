@@ -93,25 +93,45 @@
   </style>
 
 @endsection
+@php
+  $icon = "spinner"; 
+  $btn  = "secondary"; 
+  $text = $laporan->status;
+  
+  if($laporan->status == "selesai") {
+    $icon = "check";
+    $btn = "success";
+    $text = "Selesai";
+  }else if($laporan->status == "process") {
+    $btn = "primary";
+    $text = "Sedang dalam proses";
+  }else if($laporan->status == "0") {
+    $text = "Belum diproses";
+  }else if($laporan->status == "tolak") {
+    $btn = "danger";
+    $icon = "close";
+    $text = "Laporan ini ditolak";
+  }
+@endphp
 @section("content")
 <div class="report @if(Auth::id() == $laporan->id_user) mt-1 @endif">
     <div class="rounded bg-white p-3" style="">
-      <a href="{{route('laporan.pdf', [
+      <div class="d-flex">
+        <a href="{{route('laporan.pdf', [
         "download" => "pdf",
         "id" => $laporan->id
       ])}}" class="btn btn-dark ms-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><i class="fas fa-file-pdf me-2"></i>Unduh PDF</a>
+      <span class="btn btn-{{ $btn }} ms-3"><i class="fas fa-{{$icon}} me-3"></i>{{ $text }}</span>
+      </div>
         <div class="p-3">
           <div class="row">
             <div class="col-12">
-              @if($laporan->status != 0)
-              <span class="text-sm text-{{ ($laporan->status == "process" || $laporan->status == "selesai") ? "info" : "danger" }}"><i class="fas fa-circle-info me-2 mb-3"></i>status: {{ $laporan->status }}</span>
-              @endif
               
               <h3>{{ $laporan->judul }}</h3>
               <div class="d-flex" style="font-weight: 800;">
                 <span class="me-2"> {{ $laporan->user->nama }} </span>
                 <span class="opacity-75">
-                  <a href="{{ (Auth::user()->role_id == 1) || (Auth::user()->role_id == 2) ? "#" : route("user.profile", $laporan->id_user) }}" @if(Auth::user()->role_id == 3) target="_blank" @endif  class="link-primary">{{"@".$laporan->user->username}}</a>
+                  <a href="{{ (Auth::user()->role_id == 1) ? "#" : route("user.profile", $laporan->id_user) }}" @if(Auth::user()->role_id != 1) target="_blank" @endif  class="link-primary">{{"@".$laporan->user->username}}</a>
                 </span>
               <div class="created-at">
                 <span class="opacity-50 ms-3" style="">{{ $laporan->created_at }}</span>
@@ -180,8 +200,12 @@
           <a href="{{ route("tanggapan.detail", $tanggapan->id) }}" style="text-decoration: none;color: black;" class="m-3">
             <div style="background-color:white;" class="p-4 rounded tanggapan" >
               <div class="creator d-flex created_at fw-bolder">
-                <span class="me-3">{{ $tanggapan->user->username }}</span>
-                <span>{{ $tanggapan->created_at }}</span>
+                @if($tanggapan->id_user == Auth::id()) 
+                  <span class="me-3 opacity-75">Anda</span> 
+                @else 
+                  <span class="me-3">{{ $tanggapan->user->username }}</span>
+                @endif
+                <span class="opacity-50">{{ $tanggapan->created_at }}</span>
               </div>
               <div class="field">
                 {{ $tanggapan->tanggapan }}

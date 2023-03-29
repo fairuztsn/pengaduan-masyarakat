@@ -194,7 +194,7 @@
         </div>
         <form action="{{ route("register.store") }}" class="mt-4" method="POST">
             @csrf
-            <div class="mb-3">d
+            <div class="mb-3">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

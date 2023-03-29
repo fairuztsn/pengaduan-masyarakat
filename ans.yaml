@@ -1,0 +1,11 @@
+10: 
+  SELECT: Menampilkan data tertentu dari tabel tertentu dengan kondisi tertentu,
+  INSERT: Memasukkan data baru ke dalam tabel tertentu,
+  UPDATE: Melakukan perubahan data pada tabel tertentu dan dapat ditentukan data mana yang akan diubah melalui syntax WHERE condition,
+  DELETE: Menghapus data dari tabel tertentu dengan menggunakan syntax WHERE condition
+
+14:
+  Database adalah basis data, yang menyimpan berbagai data yang terstruktur berbentuk tabel-tabel ataupun dokumen-dokumen yang berisi field dan data-datanya.
+24:
+  Proses running adalah proses saat program dijalankan (run)
+  Proses debugging adalah suatu proses perbaikan yang dilakukan karena adanya bug di dalam program atau melacak bug tersebut agar bisa segera diperbaiki.

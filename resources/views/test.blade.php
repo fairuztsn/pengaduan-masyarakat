@@ -1,7 +1,1 @@
-@extends("layouts.app")
-@section("custom-css")
-@endsection
-@section("content")
-<x-button-launch-modal target="#modalTest" text="CLICK MEEE"></x-button-launch-modal>
-<x-bootstrap-modal id="modalTest" title="HEHEYEYEYEYYEEY NOT BAD" type="danger" text="UBAHHH??"></x-bootstrap-modal>
-@endsection
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos officiis quo neque at cumque, eligendi incidunt consectetur. Repellendus enim harum fuga fugit sint dicta esse itaque dolore exercitationem, quasi saepe repellat quos minus, numquam pariatur voluptatibus veritatis suscipit maxime ullam. Omnis, provident sed consequuntur fugiat maxime officia laborum maiores impedit dolorum consectetur ipsum, iusto quo vel molestiae at, excepturi numquam assumenda odio odit? Neque, nesciunt natus. Suscipit saepe optio voluptas tenetur voluptatem a ullam architecto odio blanditiis rem aliquam explicabo nesciunt fuga soluta eveniet ab quo eius harum itaque, non dignissimos numquam aut. Ullam consequatur repellat, itaque illo ab iure harum tempora eum natus quos repellendus rerum nostrum quia esse autem aperiam. Cupiditate numquam ad quasi voluptatum nostrum soluta, qui beatae. Perferendis reiciendis quisquam iure odio ratione? Sit dolorum illo beatae id quo. Ipsa tempora consequuntur earum! Aut harum quia ipsum modi magni rerum, eveniet amet enim alias ut hic.

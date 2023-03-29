@@ -1,5 +1,4 @@
 @extends("layouts.app")
-
 @section("title", "Dashboard")
 @section("custom-css")
 <style>
@@ -46,14 +45,14 @@
     </div>
     <div class="row">
       <div class="col-5 bg-white text-center p-4 ms-4 rounded-v d-flex justify-content-center align-items-center hover-1" 
-      onclick="window.location.href = '{{ route('user.index') }}'">
+      onclick="window.location.href = '{{ route('user.index').'?rid=2' }}'">
         <div class="">
           <label for="" class="text-md mb-1">Petugas</label><br>
           <span class="text-danger"><i class="fas fa-user me-3"></i>{{ $petugas_count }}</span>
         </div>
       </div>
       <div class="col-5 bg-white text-center p-4 ms-4 rounded-v d-flex justify-content-center align-items-center hover-1" 
-      @if(Auth::user()->role_id == 3) onclick="window.location.href = '{{ route('user.index') }}'" @endif>
+      @if(Auth::user()->role_id == 3) onclick="window.location.href = '{{ route('user.index').'?rid=1' }}'" @endif>
         <div>
           <label for="" class="text-md mb-1">Masyarakat</label><br>
         <span class="text-primary"><i class="fas fa-user me-3"></i>{{ $user_count }}</span>
@@ -150,7 +149,7 @@
           colors: ['#fff']
         },
         title: {
-          text: 'Grafik Laporan Pengaduan 6 Bulan Terakhir'
+          text: 'Grafik Laporan Pengaduan 6 Bulan Terakhir ({{ $nowDateTime }})'
         },
         xaxis: {
           categories: keys,
@@ -182,7 +181,8 @@
           position: 'top',
           horizontalAlign: 'left',
           offsetX: 40
-        }
+        },
+        colors:['#ADB6C4', '#1277DD', "#FF0000", '#39FF14']
         };
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
