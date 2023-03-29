@@ -47,6 +47,14 @@ Route::middleware('auth')->group(function () {
         Route::get("/{id}/pdf", [LaporanController::class, "pdf"])->name("laporan.pdf");
     });
 
+    Route::middleware("onlyone")->group(function() {
+        Route::prefix("user")->group(function() {
+            Route::get("/", [UserController::class, "index"])->name("user.index");
+            Route::get("/create", [UserController::class, "create"])->name("user.create");
+            Route::post("/store", [UserController::class, "store"])->name("user.store");
+        });
+    });
+
     Route::middleware("onlyadmin")->group( function() {
         Route::prefix("user")->group(function() {
             Route::get("/{id}", [UserController::class, "profile"])->name("user.profile");
@@ -82,14 +90,6 @@ Route::middleware('auth')->group(function () {
     Route::prefix("tanggapan")->group(function() {  
         Route::get("/", [TanggapanController::class, "index"])->name("tanggapan.index");
         Route::get("/{id}", [TanggapanController::class, "detail"])->name("tanggapan.detail");
-    });
-
-    Route::middleware("onlyone")->group(function() {
-        Route::prefix("user")->group(function() {
-            Route::get("/", [UserController::class, "index"])->name("user.index");
-            Route::get("/create", [UserController::class, "create"])->name("user.create");
-            Route::post("/store", [UserController::class, "store"])->name("user.store");
-        });
     });
 
     Route::prefix("settings")->group(function() {

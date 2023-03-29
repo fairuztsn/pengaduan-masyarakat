@@ -45,7 +45,12 @@
 
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
+						@if(Auth::user()->role_id != 1)
+						<a href="{{route("user.profile", Auth::id())}}" class="link-light" style="text-decoration:none;"><i class="fas fa-user me-3"></i>{{ Auth::user()->username }}</a>
+						@else
 						<i class="fas fa-user me-3"></i>{{ Auth::user()->username }}
+						@endif
+						
 					</li>
 					<li class="sidebar-header">
 						Pages

@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "User - Create")
+@section("title", "Buat Petugas")
 @section("content")
 <div class="p-5 bg-white rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" style="transform:scale(0.9)">
     @if ($errors->any())
@@ -12,6 +12,7 @@
         </div>
     @endif
 
+    <h3 class="title mb-4"><i class="fas fa-circle-info me-3"></i>  Buat petugas</h3>
     <form method="POST" action="{{ route("user.store") }}">
         @csrf
         <div class="mb-3">
@@ -34,7 +35,7 @@
             <input type="text" class="form-control" id="" name="nama">
             <div id="" class="form-text"></div>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus me-3"></i> Buat User</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus me-3"></i> Buat Petugas</button>
       </form>
 </div>
 @endsection
